@@ -1,0 +1,19 @@
+#Compiled source#
+*.pyc
+
+#Logfiles#
+logFile
+logErr
+
+#Temp test files#
+temp.py
+
+#Config#
+config.py
+
+#Other#
+__pycache__  
+pycrc-0.9
+
+#Graphical UI#
+dialog.ui
