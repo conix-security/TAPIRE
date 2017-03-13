@@ -29,7 +29,8 @@ def field_manipulate_menu(symbols, symbol_selector):
         print("\n")
         field_selector = input(" PLEASE SELECT A FIELD >>>   ")
         print("\n")
-        field = symbolselector.selectsymbol(symbol.fields,field_selector)
+        if field_selector != "*":
+            field = symbolselector.selectsymbol(symbol.fields,field_selector)
     else:
         if symbol.fields[0].name ==  None :
             click.echo(click.style("Field-0" + "\n", fg = "red"))
@@ -39,16 +40,20 @@ def field_manipulate_menu(symbols, symbol_selector):
             field_selector = symbol.fields[0].name
         field = symbol.fields[0]
     click.echo(click.style(field_selector,fg = "red") + click.style(" selected!\n", fg = "blue"))
-    click.echo(click.style("[Field description]", fg = "green") + click.style(":" ,fg = "blue") + click.style( field.description +"\n", fg = "magenta"))
-    click.echo(click.style("Manipulate fields:\n", fg = "blue"))
-    click.echo(click.style("[1]", fg = "green") + click.style(": Display field\n", fg = "blue"))
-    click.echo(click.style("[2]", fg= "green") + click.style(": Rename field\n", fg= "blue"))
-    click.echo(click.style("[3]", fg= "green") + click.style(": Edit field description\n", fg="blue"))
-    click.echo(click.style("[4]", fg = "green")+ click.style(": Field merger\n", fg = "blue"))
-    click.echo(click.style("[B]", fg= "green") + click.style(": Back to above menu\n", fg= "blue"))
-    #click.echo(click.style("[2]", fg = "green")+ click.style(": Clusterize\n", fg = "blue"))
-    #click.echo(click.style("[3]", fg = "green")+ click.style(": Split\n", fg = "blue"))
-    #click.echo(click.style("[4]", fg="green") + click.style(": Edit symbol description\n", fg="blue"))
+    if field_selector != "*":
+        click.echo(click.style("[Field description]", fg = "green") + click.style(":" ,fg = "blue") + click.style( field.description +"\n", fg = "magenta"))
+        click.echo(click.style("Manipulate fields:\n", fg = "blue"))
+        click.echo(click.style("[1]", fg = "green") + click.style(": Display field\n", fg = "blue"))
+        click.echo(click.style("[2]", fg= "green") + click.style(": Rename field\n", fg= "blue"))
+        click.echo(click.style("[3]", fg= "green") + click.style(": Edit field description\n", fg="blue"))
+        click.echo(click.style("[4]", fg = "green")+ click.style(": Field merger\n", fg = "blue"))
+        click.echo(click.style("[5]", fg="green") + click.style(": Encode field\n", fg="blue"))
+        click.echo(click.style("[B]", fg= "green") + click.style(": Back to above menu\n", fg= "blue"))
+    else:
+        click.echo(click.style("Manipulate fields:\n", fg="blue"))
+        click.echo(click.style("[1]", fg="green") + click.style(": Display fields\n", fg="blue"))
+        click.echo(click.style("[5]", fg="green") + click.style(": Encode fields\n", fg="blue"))
+        click.echo(click.style("[B]", fg="green") + click.style(": Back to above menu\n", fg="blue"))
     print("\n")
     selector = input("PLEASE SELECT A MENU CHOICE >>>  ")
     print("\n")
@@ -56,30 +61,51 @@ def field_manipulate_menu(symbols, symbol_selector):
 
 def field_manipulate_menu_choice(selector,field_selector,fields,symbols,symbol_selector):
 
-    if (selector == "1"):
-        click.echo(click.style("DISPLAY FIELD\n", fg= "yellow"))
-        display_field(fields,field_selector,symbols,symbol_selector)
-    elif (selector == "2"):
-        click.echo(click.style("RENAME FIELD\n", fg= "yellow"))
-        rename_field(fields, field_selector, symbols, symbol_selector)
-    elif (selector == "3"):
-        click.echo(click.style("EDIT FIELD DESCRIPTION\n", fg= "yellow"))
-        edit_field_description(fields, field_selector, symbols, symbol_selector)
-    elif (selector == "4"):
-        click.echo(click.style("FIELD MERGER\n", fg= "yellow"))
-        field_merger(fields,field_selector,symbols,symbol_selector)
-    elif (selector == "B"):
-        click.echo(click.style("BACK TO MANIPULATE MENU\n", fg= "yellow"))
-        manipulate_menu(symbols)
+    if field_selector != "*":
+        if (selector == "1"):
+            click.echo(click.style("DISPLAY FIELD\n", fg= "yellow"))
+            display_field(fields,field_selector,symbols,symbol_selector)
+        elif (selector == "2"):
+            click.echo(click.style("RENAME FIELD\n", fg= "yellow"))
+            rename_field(fields, field_selector, symbols, symbol_selector)
+        elif (selector == "3"):
+            click.echo(click.style("EDIT FIELD DESCRIPTION\n", fg= "yellow"))
+            edit_field_description(fields, field_selector, symbols, symbol_selector)
+        elif (selector == "4"):
+            click.echo(click.style("FIELD MERGER\n", fg= "yellow"))
+            field_merger(fields,field_selector,symbols,symbol_selector)
+        elif (selector == "5"):
+            click.echo(click.style("ENCODING MENU\n", fg="yellow"))
+            encoding_menu(fields, field_selector)
+        elif (selector == "B"):
+            click.echo(click.style("BACK TO MANIPULATE MENU\n", fg= "yellow"))
+            manipulate_menu(symbols)
+        else:
+            click.echo(click.style("ERROR : WRONG SELECTION\n", fg= "yellow"))
+            field_manipulate_menu(symbols,symbol_selector)
     else:
-        click.echo(click.style("ERROR : WRONG SELECTION\n", fg= "yellow"))
-        field_manipulate_menu(symbols,symbol_selector)
+        if (selector == "1"):
+            click.echo(click.style("DISPLAY FIELD\n", fg="yellow"))
+            display_field(fields, field_selector, symbols, symbol_selector)
+        elif (selector == "2"):
+            click.echo(click.style("ENCODING MENU\n", fg="yellow"))
+            encoding_menu(fields, field_selector)
+        elif (selector == "B"):
+            click.echo(click.style("BACK TO MANIPULATE MENU\n", fg= "yellow"))
+            manipulate_menu(symbols)
+        else:
+            click.echo(click.style("ERROR : WRONG SELECTION\n", fg= "yellow"))
+            field_manipulate_menu(symbols,symbol_selector)
 
 def display_field(fields,field_selector,symbol,symbol_selector):
     old_stdout = sys.stdout
     sys.stdout = tempstdout = io.StringIO()
-    field = symbolselector.selectsymbol(fields,field_selector)
-    print(field)
+    if field_selector != "*":
+        field = symbolselector.selectsymbol(fields,field_selector)
+        print(field)
+    else:
+        for field in fields:
+            print(field)
     sys.stdout = old_stdout
     click.echo_via_pager(tempstdout.getvalue())
     field_manipulate_menu(symbol, symbol_selector)

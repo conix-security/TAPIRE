@@ -5,9 +5,11 @@ from netzob.all import *
 from netzob.Inference.Vocabulary.FormatOperations.ClusterBySize import ClusterBySize
 from netzob.Inference.Vocabulary.FormatOperations.ClusterByAlignment import ClusterByAlignment
 
+import symbolselector
+
 from manipulatemenu import manipulate_menu
 
-def clusterize_menu(symbols):
+def clusterize_menu(symbols,symbol_selector):
 
     click.echo(click.style("Clusterize :", fg="blue"))
     if(isinstance(symbols,list)):
@@ -18,7 +20,7 @@ def clusterize_menu(symbols):
         print("\n")
         selector = input("PLEASE SELECT A MENU CHOICE >>>  ")
         print("\n")
-        clusterize_menu_choice(selector,symbols)
+        clusterize_menu_choice(selector,symbols,symbol_selector)
     else:
         click.echo(click.style("[1]", fg="green") + click.style(": Cluster by size\n", fg="blue"))
         click.echo(click.style("[2]", fg="green") + click.style(": Cluster by alignment\n", fg="blue"))
@@ -28,9 +30,9 @@ def clusterize_menu(symbols):
         print("\n")
         selector = input("PLEASE SELECT A MENU CHOICE >>>  ")
         print("\n")
-        clusterize_menu_choice(selector,symbols)
+        clusterize_menu_choice(selector,symbols,symbol_selector)
 
-def clusterize_menu_choice(selector,symbols):
+def clusterize_menu_choice(selector,symbols,symbol_selector):
 
     if(isinstance(symbols,list)):
         if (selector == "1"):
@@ -43,14 +45,14 @@ def clusterize_menu_choice(selector,symbols):
             manipulate_menu(symbols)
         else:
             click.echo(click.style("ERROR : WRONG SELECTION\n", fg="yellow"))
-            clusterize_menu(symbols)
+            clusterize_menu(symbols,symbol_selector)
     else:
         if (selector == "1" ):
             click.echo(click.style("CLUSTER BY SIZE\n", fg="yellow"))
-            clusterize_by_size()
+            clusterize_by_size(symbols,symbol_selector)
         elif (selector == "2"):
             click.echo(click.style("CLUSTER BY ALIGNMENT\n", fg="yellow"))
-            clusterize_by_alignment()
+            clusterize_by_alignment(symbols,symbol_selector)
         elif (selector == "3"):
             click.echo(click.style("CLUSTER BY APPLICATIVE DATA\n", fg="yellow"))
         elif( selector =="4"):
@@ -59,17 +61,31 @@ def clusterize_menu_choice(selector,symbols):
             manipulate_menu(symbols)
         else:
             click.echo(click.style("ERROR : WRONG SELECTION\n", fg="yellow"))
-            clusterize_menu(symbols)
+            clusterize_menu(symbols,symbol_selector)
 
 
-def clusterize_by_size():
-    messages = PCAPImporter.readFile(sys.argv[1]).values() + PCAPImporter.readFile(sys.argv[2]).values()
+def clusterize_by_size(symbols,symbol_selector):
+    if (isinstance(symbols, list)):
+        if symbol_selector == "*":
+            messages = PCAPImporter.readFile(sys.argv[1]).values() + PCAPImporter.readFile(sys.argv[2]).values()
+        else:
+            symbol = symbolselector.selectsymbol(symbols,symbol_selector)
+            messages = symbol.message
+    else:
+        messages = PCAPImporter.readFile(sys.argv[1]).values() + PCAPImporter.readFile(sys.argv[2]).values()
     clusterer = ClusterBySize()
     new_symbols = clusterer.cluster(messages)
     manipulate_menu(new_symbols)
 
 def clusterize_by_alignment():
-    messages = PCAPImporter.readFile(sys.argv[1]).values() + PCAPImporter.readFile(sys.argv[2]).values()
+    if (isinstance(symbols, list)):
+        if symbol_selector == "*":
+            messages = PCAPImporter.readFile(sys.argv[1]).values() + PCAPImporter.readFile(sys.argv[2]).values()
+        else:
+            symbol = symbolselector.selectsymbol(symbols,symbol_selector)
+            messages = symbol.message
+    else:
+        messages = PCAPImporter.readFile(sys.argv[1]).values() + PCAPImporter.readFile(sys.argv[2]).values()
     clusterer = ClusterByAlignment()
     new_symbols = clusterer.cluster(messages)
     if isinstance(new_symbols,list):

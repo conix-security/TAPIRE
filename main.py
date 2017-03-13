@@ -10,12 +10,11 @@ from mainmenu import main_menu
 
 def usage():
     click.echo("\n")
-    click.echo(click.style("Usage:\n\n", fg="blue") + click.style(sys.argv[0], fg = "red") + click.style(" <pcapFile1> ", fg = "red") +click.style("<pcapFile2> \n\n",fg ="red")
-               +click.style("Runs protokiller/Scadalyser on two pcap files \n", fg = "yellow"))
+    click.echo(click.style("Usage:\n\n", fg="blue") + click.style(sys.argv[0], fg = "red") + click.style(" < pcap File 1 > ", fg = "red") + click.style("< pcap File 2 >",fg ="red")
+               + click.style("< Optional : saved project >\n\n", fg = "magenta")
+               + click.style("Runs protokiller/Scadalyser on two pcap files \n", fg = "yellow"))
 
     exit(1)
-
-
 
 def main():
 

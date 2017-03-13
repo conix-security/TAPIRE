@@ -18,22 +18,33 @@ def manipulate_menu(symbols):
         print("\n")
         symbol_selector = input(" PLEASE SELECT A SYMBOL >>>   ")
         print("\n")
-        symbol = symbolselector.selectsymbol(symbols,symbol_selector)
+        if symbol_selector != "*":
+            symbol = symbolselector.selectsymbol(symbols,symbol_selector)
     else:
         click.echo(click.style("symbol_0" + "\n", fg = "red"))
         symbol_selector = "symbol_0"
         symbol = symbols
     click.echo(click.style(symbol_selector,fg = "red") + click.style(" selected!\n", fg = "blue"))
-    click.echo(click.style("[Symbol description]", fg = "green") + click.style(":" ,fg = "blue") + click.style( symbol.description +"\n", fg = "magenta"))
-    click.echo(click.style("Manipulate symbols:\n", fg = "blue"))
-    click.echo(click.style("[1]", fg = "green") + click.style(": Display symbols\n", fg = "blue"))
-    click.echo(click.style("[2]", fg = "green")+ click.style(": Clusterize\n", fg = "blue"))
-    click.echo(click.style("[3]", fg = "green")+ click.style(": Split\n", fg = "blue"))
-    click.echo(click.style("[4]", fg="green") + click.style(": Rename symbol\n", fg="blue"))
-    click.echo(click.style("[5]", fg="green") + click.style(": Edit symbol description\n", fg="blue"))
-    click.echo(click.style("[6]", fg="green") + click.style(": Generate packet according to symbol", fg="blue") + click.style("[STRESSFULL]\n",fg = "red"))
-    click.echo(click.style("[7]", fg="green") + click.style(": Manipulate Fields\n", fg="blue"))
-    click.echo(click.style("[B]", fg="green") + click.style(": Back to main menu\n", fg="blue"))
+    if symbol_selector != "*":
+        click.echo(click.style("[Symbol description]", fg = "green") + click.style(":" ,fg = "blue") + click.style( symbol.description +"\n", fg = "magenta"))
+        click.echo(click.style("Manipulate symbols:\n", fg = "blue"))
+        click.echo(click.style("[1]", fg = "green") + click.style(": Display symbols\n", fg = "blue"))
+        click.echo(click.style("[2]", fg = "green")+ click.style(": Clusterize\n", fg = "blue"))
+        click.echo(click.style("[3]", fg = "green")+ click.style(": Split\n", fg = "blue"))
+        click.echo(click.style("[4]", fg="green") + click.style(": Rename symbol\n", fg="blue"))
+        click.echo(click.style("[5]", fg="green") + click.style(": Edit symbol description\n", fg="blue"))
+        click.echo(click.style("[6]", fg="green") + click.style(": Generate packet according to symbol", fg="blue") + click.style("[STRESSFULL]\n",fg = "red"))
+        click.echo(click.style("[7]", fg="green") + click.style(": Manipulate Fields\n", fg="blue"))
+        click.echo(click.style("[8]", fg="green") + click.style(": Encode symbol\n", fg="blue"))
+        click.echo(click.style("[9]", fg="green") + click.style(": Metasearcher\n", fg="blue"))
+        click.echo(click.style("[B]", fg="green") + click.style(": Back to main menu\n", fg="blue"))
+    else:
+        click.echo(click.style("Manipulate symbols:\n", fg="blue"))
+        click.echo(click.style("[1]", fg="green") + click.style(": Display symbols\n", fg="blue"))
+        click.echo(click.style("[2]", fg="green") + click.style(": Clusterize\n", fg="blue"))
+        click.echo(click.style("[3]", fg="green") + click.style(": Split\n", fg="blue"))
+        click.echo(click.style("[4]", fg="green") + click.style(": Encode symbols\n", fg="blue"))
+        click.echo(click.style("[B]", fg="green") + click.style(": Back to main menu\n", fg="blue"))
     print("\n")
     selector = input("PLEASE SELECT A MENU CHOICE >>>  ")
     print("\n")
@@ -41,28 +52,19 @@ def manipulate_menu(symbols):
 
 def manipulate_menu_choice(selector,symbol_selector,symbols):
 
-    if (not isinstance(symbols,list)):
+    if symbol_selector == "*":
         if (selector == "1"):
             click.echo(click.style("DISPLAY SYMBOLS\n", fg="yellow"))
             display_symbols(symbol_selector, symbols)
         elif (selector == "2"):
             click.echo(click.style("CLUSTERIZE MENU\n", fg="yellow"))
-            clusterize_menu(symbols)
+            clusterize_menu(symbols,symbol_selector)
         elif (selector == "3"):
             click.echo(click.style("SPLIT MENU\n", fg="yellow"))
-            split_menu(symbol_selector,symbols)
+            split_menu(symbol_selector, symbols)
         elif (selector == "4"):
-            click.echo(click.style("RENAMIN SYMBOL\n", fg="yellow"))
-            rename_symbol(symbols,symbol_selector)
-        elif (selector == "5"):
-            click.echo(click.style("EDITING SYMBOL DESCRIPTION\n", fg="yellow"))
-            edit_symbol_description(symbols,symbol_selector)
-        elif (selector == "6"):
-            click.echo(click.style("GENERATING PACKET ACCORDING TO SYMBOL\n", fg="yellow"))
-            packet_generator(symbols,symbol_selector)
-        elif (selector == "7"):
-            click.echo(click.style("MANIPULATE FIELDS MENU\n", fg="yellow"))
-            field_manipulate_menu(symbols,symbol_selector)
+            click.echo(click.style("ENCODING MENU\n", fg="yellow"))
+            encoding_menu(symbols, symbol_selector)
         elif (selector == "B"):
             click.echo(click.style("BACK TO MAIN MENU\n", fg="yellow"))
             main_menu(symbols)
@@ -75,7 +77,7 @@ def manipulate_menu_choice(selector,symbol_selector,symbols):
             display_symbols(symbol_selector, symbols)
         elif (selector == "2"):
             click.echo(click.style("CLUSTERIZE MENU\n", fg="yellow"))
-            clusterize_menu(symbols)
+            clusterize_menu(symbols,symbol_selector)
         elif (selector == "3"):
             click.echo(click.style("SPLIT MENU\n", fg="yellow"))
             split_menu( symbol_selector, symbols)
@@ -91,6 +93,12 @@ def manipulate_menu_choice(selector,symbol_selector,symbols):
         elif (selector == "7"):
             click.echo(click.style("MANIPULATE FIELDS MENU\n", fg="yellow"))
             field_manipulate_menu(symbols, symbol_selector)
+        elif (selector == "8"):
+            click.echo(click.style("ENCODING MENU\n", fg="yellow"))
+            encoding_menu(symbols, symbol_selector)
+        elif (selector == "9"):
+            click.echo(click.style("SEARCH FOR METADATA (IP, PORTS...)\n", fg="yellow"))
+            metaseeker_menu(symbol_selector,symbols)
         elif (selector == "B"):
             click.echo(click.style("BACK TO MAIN MENU\n", fg="yellow"))
             main_menu(symbols)
@@ -103,9 +111,14 @@ def display_symbols(symbol_selector, symbols):
     old_stdout = sys.stdout
     sys.stdout = tempstdout = io.StringIO()
     if isinstance(symbols, list):
-        symbol = symbolselector.selectsymbol(symbols, symbol_selector)
-        click.echo(click.style("[", fg = "red") + click.style(symbol.name) + click.style("]",fg = "red"))
-        print(symbol)
+        if symbol_selector == "*":
+            for symbol in symbols:
+                click.echo(click.style("[", fg="red") + click.style(symbol.name) + click.style("]", fg="red"))
+                print(symbol)
+        else:
+            symbol = symbolselector.selectsymbol(symbols, symbol_selector)
+            click.echo(click.style("[", fg = "red") + click.style(symbol.name) + click.style("]",fg = "red"))
+            print(symbol)
     else:
         click.echo(click.style("[", fg="red") + click.style(symbol_selector) + click.style("]", fg="red"))
         print(symbols)
@@ -152,3 +165,5 @@ def packet_generator(symbols,symbol_selector):
 from clusterizemenu import clusterize_menu
 from splitmenu import split_menu
 from fieldmanipulatemenu import field_manipulate_menu
+from encodingmenu import encoding_menu
+from seeker import metaseeker_menu
