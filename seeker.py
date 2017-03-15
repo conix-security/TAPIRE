@@ -34,7 +34,7 @@ def metaseeker_menu_choice(seeker_selector,symbols,symbol_selector):
         click.echo(click.style("ERROR : WRONG SELECTION\n", fg="yellow"))
         encoding_menu(symbols, symbol_selector)
 
-def recursive_find(workstring, index_list, hexipstring):
+def recursive_find(workstring, index_list, hexipstring,add_length = 0):
     res_index = workstring.find(hexipstring)
     if res_index == -1:
         # NOTHING FOUND
@@ -44,13 +44,13 @@ def recursive_find(workstring, index_list, hexipstring):
         # STORE INDEX IN LIST
         if index_list:
             # List not empty, already has and index
-            index_list.append(index_list[-1] + res_index)
+            index_list.append(index_list[-1] + res_index + add_length)
         else:
-            index_list.append(res_index)
+            index_list.append(res_index+add_length)
         # DIVIDE workstring and apply find again
         workstring = workstring[res_index + len(hexipstring):]
         # Call function again
-        return recursive_find(workstring, index_list, hexipstring)
+        return recursive_find(workstring, index_list, hexipstring,len(hexipstring))
 
 def core_find(message,hexipstring,index_list):
         # Define results structure
@@ -73,9 +73,16 @@ def core_find(message,hexipstring,index_list):
                 results.two_less_be.remove(value + 1)
             if value in results.two_less_be:
                 results.two_less_be.remove(value)
+            if value in results.one_less_le:
+                results.one_less_le.remove(value)
+            if value in results.two_less_le:
+                results.two_less_le.remove(value)
         for value in results.one_less_le:
             if value + 1 in results.two_less_le :
                 results.two_less_le.remove(value + 1)
+            if value in results.two_less_le:
+                results.two_less_le.remove(value)
+        for value in results.two_less_be:
             if value in results.two_less_le:
                 results.two_less_le.remove(value)
         # Remove results from full bytes searches in one and two bytes less searches
@@ -97,6 +104,9 @@ def core_find(message,hexipstring,index_list):
                 results.one_less_le.remove(value)
                 if value in results.two_less_le:
                     results.two_less_le.remove(value)
+        #Remove results from LE wich are already in BE
+            if value in results.full_be:
+                results.full_le.remove(value)
         results.total_length = len(results.full_be) + len(results.full_le) + len(results.one_less_be) + len(results.two_less_be) + len(results.one_less_le) + len(results.two_less_le)
         return results
 
