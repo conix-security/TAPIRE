@@ -110,7 +110,7 @@ def core_find(message,hexipstring,index_list):
         results.total_length = len(results.full_be) + len(results.full_le) + len(results.one_less_be) + len(results.two_less_be) + len(results.one_less_le) + len(results.two_less_le)
         return results
 
-def seek_ip(ip, symbols,symbol_selector):
+def seek_ip(ip, symbols,symbol_selector,create_fields = False):
 
     #Convert IP to hex value:
     hexipstring = binascii.hexlify(socket.inet_aton(ip))
@@ -136,91 +136,91 @@ def seek_ip(ip, symbols,symbol_selector):
         click.echo(click.style("[Three last terms of IP Little Endian] : ", fg="green") + click.style(str(results.one_less_le) ,fg ="red")  + "\n" )
         click.echo(click.style("[Two last terms of IP Little Endian] : ", fg="green") + click.style(str(results.two_less_le),fg ="red")  + "\n" )
         print('\n')
-        click.echo(click.style("Attempting to create new fields", fg = 'yellow'))
-        if symbol.fields:
-            click.echo(click.style("Refining search to fields...", fg = 'yellow'))
-            for field in symbol.fields:
-                subfield_index_list = []
-                field_values = field.getValues()
-                number_of_values = len(set(field_values))
-                # Get field length
-                max_length = max([len(i) for i in field_values])
-                if number_of_values > 1:
-                    # More than one value => MUST CREATE ALT FIELD
-                    # TODO
-                    pass
-                else:
-                    mess = field_values[0]
-                    field_result = core_find(mess,hexipstring,index_list)
-                    if field_result:
-                    # Searchstring not always split in between fields => Need to create subfields
-                        click.echo(click.style("Searchstring inside fields, creating subfields...", fg='yellow'))
-                        # Create field dict which contains fields and index
-                        fields_dict = dict()
-                        # Check if values in messages are different for need to create an alternative field or a simple raw field (above 1 if several values):
-                        if number_of_values > 1:
-                            #More than one value => MUST CREATE ALT FIELD
-                            #TODO
-                            pass
-                        else:
-                            #Can create simple static subfield
-                            for i in field_result.full_be:
-                                fields_dict[i] = Field(name = 'FullIpBe'+ str(i),domain = Raw(hexipstring))
-                                subfield_index_list.append(i)
-                                subfield_index_list.append(i + 4)
-                            for i in field_result.one_less_be:
-                                fields_dict[i] = Field(name='ThreeTIpBe' + str(i), domain=Raw(hexipstring[1:]))
-                                subfield_index_list.append(i)
-                                subfield_index_list.append(i + 3)
-                            for i in field_result.two_less_be:
-                                fields_dict[i] = Field(name='TwoTIpBe' + str(i), domain=Raw(hexipstring[2:]))
-                                subfield_index_list.append(i)
-                                subfield_index_list.append(i + 2)
-                            for i in field_result.full_le:
-                                fields_dict[i]= Field(name='FullIpLe' + str(i), domain=Raw(hexipstring[::-1]))
-                                subfield_index_list.append(i)
-                                subfield_index_list.append(i + 4)
-                            for i in field_result.one_less_le:
-                                fields_dict[i] = Field(name='ThreeTIpLe' + str(i), domain=Raw(hexipstring[1:][::-1]))
-                                subfield_index_list.append(i)
-                                subfield_index_list.append(i + 3)
-                            for i in field_result.two_less_le:
-                                fields_dict[i] = Field(name='TwoTIpLe' + str(i), domain=Raw(hexipstring[2:][::-1]))
-                                subfield_index_list.append(i)
-                                subfield_index_list.append(i + 2)
-                            #Sort list in order
-                            subfield_index_list.append(max_length)
-                            subfield_index_list.insert(0,0)
-                            #Remove duplicates (there shouldn't be any!)
-                            subfield_index_list = list(set(subfield_index_list))
-                            subfield_index_list = sorted(subfield_index_list, key=int)
-                            #Create static field for every two elements of the subfield index_list as they represent beginning and end
-                            for i,x in enumerate(subfield_index_list):
-                                #Check if index is pair
-                                if(i%2 == 0):
-                                #Create static field and store it's beginning index in the structure
-                                    try:
-                                        fields_dict[x] = Field(name='Field' + str(i), domain = Raw(field_values[0][subfield_index_list[i]:subfield_index_list[i+1]]))
-                                    except:
-                                        fields_dict[x] = Field(name='Field' + str(i), domain=Raw(field_values[0][subfield_index_list[i]:]))
-                                else:
-                                # Don't do shit
-                                    pass
-                            #Create a list of all subfields in order
-                            od = collections.OrderedDict(sorted(fields_dict.items()))
-                            field_list = list(od.values())
-                        field.fields = field_list
+        if create_fields:
+            click.echo(click.style("Attempting to create new fields", fg = 'yellow'))
+            if symbol.fields:
+                click.echo(click.style("Refining search to fields...", fg = 'yellow'))
+                for field in symbol.fields:
+                    subfield_index_list = []
+                    field_values = field.getValues()
+                    number_of_values = len(set(field_values))
+                    # Get field length
+                    max_length = max([len(i) for i in field_values])
+                    # Check if values in messages are different for need to create an alternative field or a simple raw field (above 1 if several values):
+                    if number_of_values > 1:
+                        # More than one value => MUST CREATE ALT FIELD
+                        # TODO
+                        pass
                     else:
-                        #Searchstring always split in between other fields => Delete fields and create new ones Or just return indexes, and let user redefine fields manually
+                        mess = field_values[0]
+                        field_result = core_find(mess,hexipstring,index_list)
+                        if field_result:
+                        # Searchstring not always split in between fields => Need to create subfields
+                            click.echo(click.style("Searchstring inside fields, creating subfields...", fg='yellow'))
+                            # Create field dict which contains fields and index
+                            fields_dict = dict()
+                            if number_of_values > 1:
+                                #More than one value => MUST CREATE ALT FIELD
+                                #TODO
+                                pass
+                            else:
+                                #Can create simple static subfield
+                                for i in field_result.full_be:
+                                    fields_dict[i] = Field(name = 'FullIpBe'+ str(i),domain = Raw(hexipstring))
+                                    subfield_index_list.append(i)
+                                    subfield_index_list.append(i + 4)
+                                for i in field_result.one_less_be:
+                                    fields_dict[i] = Field(name='ThreeTIpBe' + str(i), domain=Raw(hexipstring[1:]))
+                                    subfield_index_list.append(i)
+                                    subfield_index_list.append(i + 3)
+                                for i in field_result.two_less_be:
+                                    fields_dict[i] = Field(name='TwoTIpBe' + str(i), domain=Raw(hexipstring[2:]))
+                                    subfield_index_list.append(i)
+                                    subfield_index_list.append(i + 2)
+                                for i in field_result.full_le:
+                                    fields_dict[i]= Field(name='FullIpLe' + str(i), domain=Raw(hexipstring[::-1]))
+                                    subfield_index_list.append(i)
+                                    subfield_index_list.append(i + 4)
+                                for i in field_result.one_less_le:
+                                    fields_dict[i] = Field(name='ThreeTIpLe' + str(i), domain=Raw(hexipstring[1:][::-1]))
+                                    subfield_index_list.append(i)
+                                    subfield_index_list.append(i + 3)
+                                for i in field_result.two_less_le:
+                                    fields_dict[i] = Field(name='TwoTIpLe' + str(i), domain=Raw(hexipstring[2:][::-1]))
+                                    subfield_index_list.append(i)
+                                    subfield_index_list.append(i + 2)
+                                #Sort list in order
+                                subfield_index_list.append(max_length)
+                                subfield_index_list.insert(0,0)
+                                #Remove duplicates (there shouldn't be any!)
+                                subfield_index_list = list(set(subfield_index_list))
+                                subfield_index_list = sorted(subfield_index_list, key=int)
+                                #Create static field for every two elements of the subfield index_list as they represent beginning and end
+                                for i,x in enumerate(subfield_index_list):
+                                    #Check if index is pair
+                                    if(i%2 == 0):
+                                    #Create static field and store it's beginning index in the structure
+                                        try:
+                                            fields_dict[x] = Field(name='Field' + str(i), domain = Raw(field_values[0][subfield_index_list[i]:subfield_index_list[i+1]]))
+                                        except:
+                                            fields_dict[x] = Field(name='Field' + str(i), domain=Raw(field_values[0][subfield_index_list[i]:]))
+                                    else:
+                                    # Don't do shit
+                                        pass
+                                #Create a list of all subfields in order
+                                od = collections.OrderedDict(sorted(fields_dict.items()))
+                                field_list = list(od.values())
+                            field.fields = field_list
+                        else:
+                            #Searchstring always split in between other fields => Delete fields and create new ones Or just return indexes, and let user redefine fields manually
+                            # symbol.fields = []
                             click.echo(click.style("Searchstring in between fields...", fg='yellow'))
                             click.echo(click.style("[1] : ", fg="green") + click.style("Delete all fields and replace by IPFIELDS"+ "\n", fg="blue"))
-                            click.echo(click.style("[2] : ", fg="green") + click.style("Just print the index in the message"+ "\n", fg="blue"))
+                            click.echo(click.style("[ANY] : ", fg="green") + click.style("Just print the index in the message"+ "\n", fg="blue"))
                             selector = input(" PLEASE SELECT AN ELEMENT TO SEEK >>>   ")
                             if selector == "1":
                                 #TODO
                                 pass
-                            elif selector == "2":
+                            else :
                                 manipulate_menu(symbols)
-                            else:
-                                click.echo(click.style("WRONG INPUT! QUITTING ", fg="red"))
     manipulate_menu(symbols)

@@ -1,6 +1,7 @@
 import click
 import sys
 import pickle
+import IPython
 
 from netzob.all import *
 
@@ -16,6 +17,7 @@ def main_menu(symbols=None):
     click.echo(click.style("[1]", fg = "green")+ click.style(": Display pcap exchange\n", fg = "blue"))
     click.echo(click.style("[2]", fg = "green")+ click.style(": Manipulate\n", fg = "blue"))
     click.echo(click.style("[3]", fg = "green")+ click.style(": Save project\n", fg = "blue"))
+    click.echo(click.style("[4]", fg = "green")+ click.style(": Open IPython shell\n",fg = "blue"))
     selector = input(" PLEASE INPUT SELECTION >>>  ")
     main_menu_choice(selector,symbols)
 
@@ -34,6 +36,10 @@ def main_menu_choice(selector,symbols):
     elif(selector == "3"):
         click.echo(click.style("SAVE\n", fg="yellow"))
         save_object(symbols)
+    elif(selector == "4"):
+        click.echo(click.style("IPYTHON SHELL",fg="yellow"))
+        IPython.embed()
+        main_menu(symbols)
     else:
         click.echo(click.style("ERROR : WRONG SELECTION\n", fg="yellow"))
         main_menu(symbols)
