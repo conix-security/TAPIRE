@@ -154,7 +154,7 @@ def seek_ip(ip, symbols,symbol_selector,create_fields = False):
                     else:
                         mess = field_values[0]
                         field_result = core_find(mess,hexipstring,index_list)
-                        if field_result:
+                        if field_result.full_be or field_result.one_less_be or field_result.two_less_be or field_result.full_le or field_result.one_less_le or field_result.two_less_le :
                         # Searchstring not always split in between fields => Need to create subfields
                             click.echo(click.style("Searchstring inside fields, creating subfields...", fg='yellow'))
                             # Create field dict which contains fields and index
