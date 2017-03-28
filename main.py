@@ -6,7 +6,7 @@ import click
 #PROJECT FILES
 from mainmenu import main_menu
 
-#logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 def usage():
     click.echo("\n")
