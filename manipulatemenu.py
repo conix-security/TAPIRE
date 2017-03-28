@@ -37,6 +37,7 @@ def manipulate_menu(symbols):
         click.echo(click.style("[7]", fg="green") + click.style(": Manipulate Fields\n", fg="blue"))
         click.echo(click.style("[8]", fg="green") + click.style(": Encode symbol\n", fg="blue"))
         click.echo(click.style("[9]", fg="green") + click.style(": Metasearcher\n", fg="blue"))
+        click.echo(click.style("[R]", fg="green") + click.style(": RelationFinder\n", fg="blue"))
         click.echo(click.style("[B]", fg="green") + click.style(": Back to main menu\n", fg="blue"))
     else:
         click.echo(click.style("Manipulate symbols:\n", fg="blue"))
@@ -44,6 +45,7 @@ def manipulate_menu(symbols):
         click.echo(click.style("[2]", fg="green") + click.style(": Clusterize\n", fg="blue"))
         click.echo(click.style("[3]", fg="green") + click.style(": Split\n", fg="blue"))
         click.echo(click.style("[4]", fg="green") + click.style(": Encode symbols\n", fg="blue"))
+        click.echo(click.style("[R]", fg="green") + click.style(": RelationFinder\n", fg="blue"))
         click.echo(click.style("[B]", fg="green") + click.style(": Back to main menu\n", fg="blue"))
     print("\n")
     selector = input("PLEASE SELECT A MENU CHOICE >>>  ")
@@ -65,6 +67,9 @@ def manipulate_menu_choice(selector,symbol_selector,symbols):
         elif (selector == "4"):
             click.echo(click.style("ENCODING MENU\n", fg="yellow"))
             encoding_menu(symbols, symbol_selector)
+        elif(selector == "R"):
+            click.echo(click.style("RELATION FINDER\n", fg="yellow"))
+            relationfinder_menu(symbol_selector,symbols)
         elif (selector == "B"):
             click.echo(click.style("BACK TO MAIN MENU\n", fg="yellow"))
             main_menu(symbols)
@@ -99,6 +104,9 @@ def manipulate_menu_choice(selector,symbol_selector,symbols):
         elif (selector == "9"):
             click.echo(click.style("SEARCH FOR METADATA (IP, PORTS...)\n", fg="yellow"))
             metaseeker_menu(symbol_selector,symbols)
+        elif(selector == "R"):
+            click.echo(click.style("RELATION FINDER\n", fg="yellow"))
+            relationfinder_menu(symbol_selector,symbols)
         elif (selector == "B"):
             click.echo(click.style("BACK TO MAIN MENU\n", fg="yellow"))
             main_menu(symbols)
@@ -167,3 +175,4 @@ from splitmenu import split_menu
 from fieldmanipulatemenu import field_manipulate_menu
 from encodingmenu import encoding_menu
 from seeker import metaseeker_menu
+from Relation_finder import relationfinder_menu

@@ -5,9 +5,6 @@ import IPython
 
 from netzob.all import *
 
-
-
-
 def main_menu(symbols=None):
 
     if(symbols is None and len(sys.argv) >= 4):
