@@ -10,7 +10,19 @@ def main_menu(symbols=None):
     if(symbols is None and len(sys.argv) >= 4):
         with open(sys.argv[3], 'rb') as file:
             symbols = pickle.load(file)
-    click.echo(click.style("Welcome to scadalyser, please select what you would like to do?", fg = "blue"))
+    click.echo(click.style(
+               """" \n\n\n
+                        _,.,.__,--.__,-----.
+                      ,""   '))              `.
+                    ,'   e                    ))
+                   (  .='__,                  ,
+                    `~`     `-\  /._____,/   /
+                             | | )    (  (   ;
+                             | | |    / / / /
+                     vvVVvvVvVVVvvVVVvvVVvVvvvVvPhSv
+
+    """,fg="magenta") + '\n')
+    click.echo(click.style("Welcome to TAPIRE, please select a menu option\n", fg = "yellow"))
     click.echo(click.style("[1]", fg = "green")+ click.style(": Display pcap exchange\n", fg = "blue"))
     click.echo(click.style("[2]", fg = "green")+ click.style(": Manipulate\n", fg = "blue"))
     click.echo(click.style("[3]", fg = "green")+ click.style(": Save project\n", fg = "blue"))
