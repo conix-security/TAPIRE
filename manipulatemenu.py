@@ -36,7 +36,7 @@ def manipulate_menu(symbols):
         click.echo(click.style("[6]", fg="green") + click.style(": Generate packet according to symbol", fg="blue") + click.style("[STRESSFULL]\n",fg = "red"))
         click.echo(click.style("[7]", fg="green") + click.style(": Manipulate Fields\n", fg="blue"))
         click.echo(click.style("[8]", fg="green") + click.style(": Encode symbol\n", fg="blue"))
-        click.echo(click.style("[9]", fg="green") + click.style(": Metasearcher\n", fg="blue"))
+        click.echo(click.style("[9]", fg="green") + click.style(": Search for data relations (CRC, IP etc.)\n", fg="blue"))
         click.echo(click.style("[R]", fg="green") + click.style(": RelationFinder\n", fg="blue"))
         click.echo(click.style("[B]", fg="green") + click.style(": Back to main menu\n", fg="blue"))
     else:
@@ -102,8 +102,8 @@ def manipulate_menu_choice(selector,symbol_selector,symbols):
             click.echo(click.style("ENCODING MENU\n", fg="yellow"))
             encoding_menu(symbols, symbol_selector)
         elif (selector == "9"):
-            click.echo(click.style("SEARCH FOR METADATA (IP, PORTS...)\n", fg="yellow"))
-            metaseeker_menu(symbol_selector,symbols)
+            click.echo(click.style("SEARCH FOR DATA RELATIONS\n", fg="yellow"))
+            dataSeeker_menu(symbol_selector,symbols)
         elif(selector == "R"):
             click.echo(click.style("RELATION FINDER\n", fg="yellow"))
             relationfinder_menu(symbol_selector,symbols)
@@ -174,5 +174,5 @@ from clusterizemenu import clusterize_menu
 from splitmenu import split_menu
 from fieldmanipulatemenu import field_manipulate_menu
 from encodingmenu import encoding_menu
-from seeker import metaseeker_menu
 from Relation_finder import relationfinder_menu
+from dataSeekers import dataSeeker_menu
