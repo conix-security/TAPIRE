@@ -24,15 +24,27 @@ def metaseeker_menu_choice(seeker_selector,symbols,symbol_selector):
     two_t = input(" PLEASE SELECT A CHOICE >>>   ")
     if (seeker_selector == "1"):
         if two_t:
-            seeker.executeOnSymbol(symbol=symbol, create_fields=True,two_terms=True)
+            try:
+                seeker.executeOnSymbol(symbol=symbol, create_fields=True,two_terms=True)
+            except:
+                pass
         else:
-            seeker.executeOnSymbol(symbol=symbol, create_fields=True, two_terms=False)
+            try:
+                seeker.executeOnSymbol(symbol=symbol, create_fields=True, two_terms=False)
+            except:
+                pass
         manipulate_menu(symbols)
     elif (seeker_selector == "2"):
         if two_t:
-            seeker.executeOnSymbol(symbol=symbol, create_fields=False, two_terms=True)
+            try:
+                seeker.executeOnSymbol(symbol=symbol, create_fields=False, two_terms=True)
+            except:
+                pass
         else:
-            seeker.executeOnSymbol(symbol=symbol, create_fields=False, two_terms=False)
+            try:
+                seeker.executeOnSymbol(symbol=symbol, create_fields=False, two_terms=False)
+            except:
+                pass
         manipulate_menu(symbols)
     else:
         click.echo(click.style("ERROR : WRONG SELECTION\n", fg="yellow"))
