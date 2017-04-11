@@ -9,7 +9,7 @@ from mainmenu import main_menu
 def manipulate_menu(symbols):
 
     click.echo(click.style("Available symbols:\n", fg="blue"))
-    if isinstance(symbols, list):
+    if len(symbols) > 1:
         old_stdout = sys.stdout
         sys.stdout = tempstdout = io.StringIO()
         print(symbols)
@@ -23,7 +23,7 @@ def manipulate_menu(symbols):
     else:
         click.echo(click.style("symbol_0" + "\n", fg = "red"))
         symbol_selector = "symbol_0"
-        symbol = symbols
+        symbol = symbolselector.selectsymbol(symbols,symbol_selector)
     click.echo(click.style(symbol_selector,fg = "red") + click.style(" selected!\n", fg = "blue"))
     if symbol_selector != "*":
         click.echo(click.style("[Symbol description]", fg = "green") + click.style(":" ,fg = "blue") + click.style( symbol.description +"\n", fg = "magenta"))

@@ -1,10 +1,11 @@
 import sys
+import io
 import click
 
 from netzob.all import *
 
 import symbolselector
-
+import replace_symbols
 from manipulatemenu import manipulate_menu
 
 def clusterize_menu(symbols,symbol_selector):
@@ -40,6 +41,7 @@ def clusterize_menu_choice(selector,symbols,symbol_selector):
             click.echo(click.style("CLUSTER BY APPLICATIVE DATA\n", fg="yellow"))
         elif( selector =="3"):
             click.echo(click.style("CLUSTER BY KEY FIELD\n", fg="yellow"))
+            clusterize_by_key_field(symbols, symbol_selector)
         elif(selector == "B"):
             manipulate_menu(symbols)
         else:
@@ -56,6 +58,7 @@ def clusterize_menu_choice(selector,symbols,symbol_selector):
             click.echo(click.style("CLUSTER BY APPLICATIVE DATA\n", fg="yellow"))
         elif( selector =="4"):
             click.echo(click.style("CLUSTER BY KEY FIELD\n", fg="yellow"))
+            clusterize_by_key_field(symbols,symbol_selector)
         elif (selector == "5"):
             click.echo(click.style("CLUSTER BY CRC32\n", fg="yellow"))
             clusterize_by_CRC(symbols, symbol_selector)
@@ -107,3 +110,30 @@ def clusterize_by_CRC(symbols,symbol_selector):
         messages = PCAPImporter.readFile(sys.argv[1]).values() + PCAPImporter.readFile(sys.argv[2]).values()
     new_symbols = Format.clusterByCRC(messages)
     manipulate_menu(new_symbols)
+
+def clusterize_by_key_field(symbols,symbol_selector):
+    if (isinstance(symbols, list)):
+        if symbol_selector == "*":
+            click.echo(click.style("[ERROR] ", fg="red") + click.style("Selector can't be * for key field clustering!",
+                                                                       fg="blue") + '\n')
+            manipulate_menu(symbols)
+        else:
+            symbol = symbolselector.selectsymbol(symbols,symbol_selector)
+            display_symbol(symbol)
+            for index,field in enumerate(symbol.fields):
+                click.echo(click.style("["+str(index)+"] ", fg="green") + click.style("Field-", fg="blue") + str(index))
+            field_index = input("Please Select a field to cluster >>> ")
+            field = symbol.fields[int(field_index)]
+        new_symbols = Format.clusterByKeyField(symbol,field)
+        replace_symbols.replace_symb(symbols,symbol,new_symbols)
+    manipulate_menu(symbols)
+
+def display_symbol(symbol):
+
+    old_stdout = sys.stdout
+    sys.stdout = tempstdout = io.StringIO()
+    click.echo(click.style("[Available fields for clustering]", fg="red") + "\n")
+    click.echo(click.style("[", fg="red") + click.style(symbol.name) + click.style("]", fg="red"))
+    print(symbol)
+    sys.stdout = old_stdout
+    click.echo_via_pager(tempstdout.getvalue())

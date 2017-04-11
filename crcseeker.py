@@ -3,6 +3,7 @@ import click
 from netzob.all import *
 
 import symbolselector
+import replace_symbols
 
 from manipulatemenu import manipulate_menu
 
@@ -21,12 +22,10 @@ def crcSeeker_menu_choice(seeker_selector,symbols,symbol_selector):
     seeker = CRCFinder()
     if (seeker_selector == "1"):
         new_symbols = clusterize_by_CRC(symbol)
-        index = symbols.index(symbol)
         for sym in new_symbols:
             if sym.name.find("No_CRC") == -1:
                 seeker.findOnSymbol(symbol=sym,create_fields=True)
-            symbols.insert(index,sym)
-        symbols.remove(symbol)
+        replace_symbols.replace_symb(symbols,symbol,new_symbols)
         manipulate_menu(symbols)
     elif (seeker_selector == "2"):
         try:
@@ -39,6 +38,5 @@ def crcSeeker_menu_choice(seeker_selector,symbols,symbol_selector):
         manipulate_menu(symbols)
 
 def clusterize_by_CRC(symbol):
-
     new_symbols = Format.clusterByCRC(symbol)
     return new_symbols

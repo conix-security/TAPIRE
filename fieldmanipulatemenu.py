@@ -7,6 +7,7 @@ from netzob.all import *
 import symbolselector
 
 from manipulatemenu import manipulate_menu
+from splitmenu import split_menu
 
 def field_manipulate_menu(symbols, symbol_selector):
 
@@ -18,14 +19,13 @@ def field_manipulate_menu(symbols, symbol_selector):
     click.echo(click.style(symbol_selector, fg="red") + click.style(" selected!\n", fg="blue"))
     click.echo(click.style("[Symbol description]", fg="green") + click.style(":", fg="blue") + click.style(
         symbol.description + "\n", fg="magenta"))
-    index = 0
     click.echo(click.style("Available fields:\n", fg="blue"))
     if len(symbol.fields) > 1:
-        for field in symbol.fields:
-            if field.name == "Field":
-                field.name = "Field-" + str(index)
-            click.echo(click.style(field.name + "\n", fg="red"))
-            index += 1
+        old_stdout = sys.stdout
+        sys.stdout = tempstdout = io.StringIO()
+        print(symbol.fields)
+        sys.stdout = old_stdout
+        click.echo(click.style(tempstdout.getvalue() + '\n',fg="red"))
         print("\n")
         field_selector = input(" PLEASE SELECT A FIELD >>>   ")
         print("\n")
@@ -48,6 +48,7 @@ def field_manipulate_menu(symbols, symbol_selector):
         click.echo(click.style("[3]", fg= "green") + click.style(": Edit field description\n", fg="blue"))
         click.echo(click.style("[4]", fg = "green")+ click.style(": Field merger\n", fg = "blue"))
         click.echo(click.style("[5]", fg="green") + click.style(": Encode field\n", fg="blue"))
+        click.echo(click.style("[6]", fg="green") + click.style(": Field Splitter\n", fg="blue"))
         click.echo(click.style("[B]", fg= "green") + click.style(": Back to above menu\n", fg= "blue"))
     else:
         click.echo(click.style("Manipulate fields:\n", fg="blue"))
@@ -77,6 +78,10 @@ def field_manipulate_menu_choice(selector,field_selector,fields,symbols,symbol_s
         elif (selector == "5"):
             click.echo(click.style("ENCODING MENU\n", fg="yellow"))
             encoding_menu(fields, field_selector)
+        elif (selector == "6"):
+            click.echo(click.style("FIELD SPLIT MENU\n", fg="yellow"))
+            split_menu(field_selector,fields)
+            manipulate_menu(symbols)
         elif (selector == "B"):
             click.echo(click.style("BACK TO MANIPULATE MENU\n", fg= "yellow"))
             manipulate_menu(symbols)
@@ -150,4 +155,3 @@ def field_merger(fields,field_selector,symbols,symbol_selector):
     field = symbolselector.selectsymbol(symbolselector.selectsymbol(symbols,symbol_selector).fields,"Merge")
     field.name = field_name
     field_manipulate_menu(symbols, symbol_selector)
-

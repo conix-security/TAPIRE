@@ -39,7 +39,7 @@ def main_menu_choice(selector,symbols):
         click.echo(click.style("MANIPULATE MENU\n", fg="yellow"))
         if symbols == None:
             messages = PCAPImporter.readFile(sys.argv[1]).values() + PCAPImporter.readFile(sys.argv[2]).values()
-            manipulate_menu(Symbol(messages=messages))
+            manipulate_menu([Symbol(name='symbol_0',messages=messages)])
         else:
             manipulate_menu(symbols)
     elif(selector == "3"):
