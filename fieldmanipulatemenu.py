@@ -21,11 +21,10 @@ def field_manipulate_menu(symbols, symbol_selector):
         symbol.description + "\n", fg="magenta"))
     click.echo(click.style("Available fields:\n", fg="blue"))
     if len(symbol.fields) > 1:
-        old_stdout = sys.stdout
-        sys.stdout = tempstdout = io.StringIO()
-        print(symbol.fields)
-        sys.stdout = old_stdout
-        click.echo(click.style(tempstdout.getvalue() + '\n',fg="red"))
+        field_list = []
+        for field in symbol.fields:
+            field_list.append(field.name)
+        click.echo(click.style(str(field_list)+ '\n',fg="red"))
         print("\n")
         field_selector = input(" PLEASE SELECT A FIELD >>>   ")
         print("\n")
