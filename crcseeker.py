@@ -21,17 +21,21 @@ def crcSeeker_menu_choice(seeker_selector,symbols,symbol_selector):
     symbol = symbolselector.selectsymbol(symbols, symbol_selector)
     seeker = CRCFinder()
     if (seeker_selector == "1"):
-        new_symbols = clusterize_by_CRC(symbol)
-        for sym in new_symbols:
-            if sym.name.find("No_CRC") == -1:
-                seeker.findOnSymbol(symbol=sym,create_fields=True)
+        not_work = True
+        #Sometimes clustering fails so we apply this quick workaround untill it succeeds
+        while not_work:
+            new_symbols = clusterize_by_CRC(symbol)
+            for sym in new_symbols:
+                if sym.name.find("No_CRC") == -1:
+                    try:
+                        seeker.findOnSymbol(symbol=sym,create_fields=True)
+                        not_work = False
+                    except:
+                        not_work = True
         replace_symbols.replace_symb(symbols,symbol,new_symbols)
         manipulate_menu(symbols)
     elif (seeker_selector == "2"):
-        try:
-            seeker.findOnSymbol(symbol=symbol, create_fields=False)
-        except:
-            pass
+        seeker.findOnSymbol(symbol=symbol, create_fields=False)
         manipulate_menu(symbols)
     else:
         click.echo(click.style("ERROR : WRONG SELECTION\n", fg="yellow"))

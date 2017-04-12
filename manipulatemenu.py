@@ -21,7 +21,7 @@ def manipulate_menu(symbols):
         if symbol_selector != "*":
             symbol = symbolselector.selectsymbol(symbols,symbol_selector)
     else:
-        click.echo(click.style("symbol_0" + "\n", fg = "red"))
+        click.echo(click.style("[symbol_0]" + "\n", fg = "red"))
         symbol_selector = "symbol_0"
         symbol = symbolselector.selectsymbol(symbols,symbol_selector)
     click.echo(click.style(symbol_selector,fg = "red") + click.style(" selected!\n", fg = "blue"))
@@ -45,6 +45,7 @@ def manipulate_menu(symbols):
         click.echo(click.style("[2]", fg="green") + click.style(": Clusterize\n", fg="blue"))
         click.echo(click.style("[3]", fg="green") + click.style(": Split\n", fg="blue"))
         click.echo(click.style("[4]", fg="green") + click.style(": Encode symbols\n", fg="blue"))
+        click.echo(click.style("[5]", fg="green") + click.style(": Manipulate fields\n", fg="blue"))
         click.echo(click.style("[R]", fg="green") + click.style(": RelationFinder\n", fg="blue"))
         click.echo(click.style("[B]", fg="green") + click.style(": Back to main menu\n", fg="blue"))
     print("\n")
@@ -67,6 +68,9 @@ def manipulate_menu_choice(selector,symbol_selector,symbols):
         elif (selector == "4"):
             click.echo(click.style("ENCODING MENU\n", fg="yellow"))
             encoding_menu(symbols, symbol_selector)
+        elif (selector == "5"):
+            click.echo(click.style("MANIPULATE FIELDS MENU\n", fg="yellow"))
+            field_manipulate_menu(symbols, symbol_selector)
         elif(selector == "R"):
             click.echo(click.style("RELATION FINDER\n", fg="yellow"))
             relationfinder_menu(symbol_selector,symbols)
@@ -118,18 +122,14 @@ def display_symbols(symbol_selector, symbols):
 
     old_stdout = sys.stdout
     sys.stdout = tempstdout = io.StringIO()
-    if isinstance(symbols, list):
-        if symbol_selector == "*":
-            for symbol in symbols:
-                click.echo(click.style("[", fg="red") + click.style(symbol.name) + click.style("]", fg="red"))
-                print(symbol)
-        else:
-            symbol = symbolselector.selectsymbol(symbols, symbol_selector)
-            click.echo(click.style("[", fg = "red") + click.style(symbol.name) + click.style("]",fg = "red"))
+    if symbol_selector == "*":
+        for symbol in symbols:
+            click.echo(click.style("[", fg="red") + click.style(symbol.name) + click.style("]", fg="red"))
             print(symbol)
     else:
-        click.echo(click.style("[", fg="red") + click.style(symbol_selector) + click.style("]", fg="red"))
-        print(symbols)
+        symbol = symbolselector.selectsymbol(symbols, symbol_selector)
+        click.echo(click.style("[", fg="red") + click.style(symbol.name) + click.style("]", fg="red"))
+        print(symbol)
     sys.stdout = old_stdout
     click.echo_via_pager(tempstdout.getvalue())
     manipulate_menu(symbols)

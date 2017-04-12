@@ -8,7 +8,7 @@ from netzob.Common.Utils.TypedList import TypedList
 import converter
 from manipulatemenu import manipulate_menu
 
-def split_menu(symbol_selector, symbols):
+def split_menu(symbol_selector, symbols,field_selector = None):
     click.echo(click.style("[1]", fg="green") + click.style(": Split static\n", fg="blue"))
     click.echo(click.style("[2]", fg="green") + click.style(": Split aligned\n", fg="blue"))
     click.echo(click.style("[3]", fg="green") + click.style(": Split delimiter\n", fg="blue"))
@@ -16,57 +16,55 @@ def split_menu(symbol_selector, symbols):
     print("\n")
     selector = input("PLEASE SELECT A MENU CHOICE >>>  ")
     print("\n")
-    split_menu_choice(selector, symbol_selector, symbols)
+    split_menu_choice(selector, symbol_selector, symbols,field_selector)
 
 
-def split_menu_choice(selector, symbol_selector, symbols):
+def split_menu_choice(selector, symbol_selector, symbols,field_selector):
     if (selector == "1"):
         click.echo(click.style("SPLIT STATIC\n", fg="yellow"))
-        split_static(symbols,  symbol_selector)
+        split_static(symbols,  symbol_selector,field_selector)
     elif (selector == "2"):
         click.echo(click.style("SPLIT ALIGNED\n", fg="yellow"))
-        split_aligned(symbols, symbol_selector)
+        split_aligned(symbols, symbol_selector,field_selector)
     elif (selector == "3"):
         click.echo(click.style("SPLIT DELIMITER\n", fg="yellow"))
-        split_delimiter(symbols,symbol_selector)
+        split_delimiter(symbols,symbol_selector,field_selector)
     elif (selector == "B"):
         manipulate_menu(symbols)
     else:
         click.echo(click.style("ERROR : WRONG SELECTION\n", fg="yellow"))
-        split_menu( symbol_selector, symbols)
+        split_menu(symbol_selector, symbols)
     return
 
-def split_static(symbols,  symbol_selector):
-    if (isinstance(symbols, list) or isinstance(symbols,TypedList)):
-        if symbol_selector == "*":
-          for symbol in symbols:
-              Format.splitStatic(symbol)
-        else:
-            symbol = symbolselector.selectsymbol(symbols, symbol_selector)
-            Format.splitStatic(symbol)
+def split_static(symbols,  symbol_selector,field_selector):
+    if symbol_selector == "*":
+        for symbol in symbols:
+            if field_selector is not None:
+                Format.splitStatic(symbol.fields[int(field_selector)])
+            else:
+                Format.splitStatic(symbol)
     else:
-        symbol = symbols
+        symbol = symbolselector.selectsymbol(symbols, symbol_selector)
         Format.splitStatic(symbol)
     if isinstance(symbols, TypedList):
         return
     manipulate_menu(symbols)
 
-def split_aligned(symbols, symbol_selector):
-    if (isinstance(symbols, list) or isinstance(symbols,TypedList)):
-        if symbol_selector != "*":
-            symbol = symbolselector.selectsymbol(symbols, symbol_selector)
-            Format.splitAligned(symbol)
-        else:
-            for symbol in symbols:
-                Format.splitAligned(symbol)
-    else:
-        symbol = symbols
+def split_aligned(symbols, symbol_selector,field_selector):
+    if symbol_selector != "*":
+        symbol = symbolselector.selectsymbol(symbols, symbol_selector)
         Format.splitAligned(symbol)
+    else:
+        for symbol in symbols:
+            if field_selector is not None:
+                Format.splitAligned(symbol.fields[int(field_selector)])
+            else:
+                Format.splitAligned(symbol)
     if isinstance(symbols,TypedList):
         return
     manipulate_menu(symbols)
 
-def split_delimiter(symbols,  symbol_selector):
+def split_delimiter(symbols,  symbol_selector,field_selector):
     click.echo(click.style("[1] ", fg="green") + click.style("[Ascii]", fg="blue") + '\n')
     click.echo(click.style("[2] ", fg="green") + click.style("[Raw]", fg="blue") + '\n')
     click.echo(click.style("[3] ", fg="green") + click.style("[HexaString]", fg="blue") + '\n')
@@ -104,15 +102,14 @@ def split_delimiter(symbols,  symbol_selector):
         click.echo(click.style("[ERROR] ", fg="red") + click.style("Wrong selection",
                                                                    fg="blue") + '\n')
         split_menu(symbol_selector, symbols)
-    if (isinstance(symbols, list) or isinstance(symbols,TypedList)):
-        if symbol_selector == "*":
-          for symbol in symbols:
-              Format.splitDelimiter(symbol,delimiter)
-        else:
-            symbol = symbolselector.selectsymbol(symbols, symbol_selector)
-            Format.splitDelimiter(symbol,delimiter)
+    if symbol_selector == "*":
+        for symbol in symbols:
+            if field_selector is not None:
+                Format.splitDelimiter(symbol.fields[int(field_selector)],delimiter)
+            else:
+                Format.splitDelimiter(symbol,delimiter)
     else:
-        symbol = symbols
+        symbol = symbolselector.selectsymbol(symbols, symbol_selector)
         Format.splitDelimiter(symbol,delimiter)
     if isinstance(symbols, TypedList):
         return
