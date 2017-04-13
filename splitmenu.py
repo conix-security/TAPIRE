@@ -57,7 +57,7 @@ def split_aligned(symbols, symbol_selector,field_selector):
     else:
         for symbol in symbols:
             if field_selector is not None:
-                Format.splitAligned(symbol.fields[int(field_selector)])
+                Format.splitAligned(symbol.fields[int(field_selector)],doInternalSlick=True)
             else:
                 Format.splitAligned(symbol)
     if isinstance(symbols,TypedList):

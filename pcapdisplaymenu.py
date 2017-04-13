@@ -30,7 +30,7 @@ def pcap_exchange_menu_choice(selector,symbols):
     elif (selector == "4"):
         click.echo(click.style("DISPLAY AS ASCII\n", fg="yellow"))
     elif (selector == "B"):
-        main_menu()
+        main_menu(symbols)
     else:
         click.echo(click.style("ERROR : WRONG SELECTION\n", fg="yellow"))
         pcap_exchange_menu(symbols)
