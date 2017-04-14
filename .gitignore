@@ -17,3 +17,6 @@ pycrc-0.9
 
 #Graphical UI#
 dialog.ui
+
+#.ignore#
+.idea
