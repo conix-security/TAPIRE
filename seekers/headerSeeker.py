@@ -1,9 +1,9 @@
 import click
-import codecs
-
 from netzob.all import *
 
-from manipulatemenu import manipulate_menu
+from menus.manipulatemenu import manipulate_menu
+from utilitaries import converter
+
 
 #TODO Get Debug log output from Netgoblin headerSeeker
 
@@ -101,7 +101,7 @@ def seek_headers_value_sep(symbols):
     if separator == "ASCII":
         field = Field(domain = ASCII(value))
     elif separator == "Raw":
-        field = Field(domain=Raw(input_to_raw(value)))
+        field = Field(domain=Raw(converter.input_to_raw(value)))
     elif separator == "Hexadecimal":
         pass
     else:
@@ -116,7 +116,3 @@ def seek_headers_value_sep(symbols):
         click.echo(click.style("Sorry, didn't find anything!\n", fg="yellow"))
     manipulate_menu(symbols)
     pass
-
-def input_to_raw(string):
-    string = codecs.decode(string, "unicode_escape")
-    return string.encode('ISO-8859-1')

@@ -1,15 +1,16 @@
-import click
-import sys
 import io
+import sys
 
-import symbolselector
+import click
 
-from mainmenu import main_menu
+from menus.mainmenu import main_menu
+from utilitaries import symbolselector
+
 
 def manipulate_menu(symbols):
 
     click.echo(click.style("Available symbols:\n", fg="blue"))
-    if isinstance(symbols, list):
+    if len(symbols) > 1:
         old_stdout = sys.stdout
         sys.stdout = tempstdout = io.StringIO()
         print(symbols)
@@ -19,11 +20,11 @@ def manipulate_menu(symbols):
         symbol_selector = input(" PLEASE SELECT A SYMBOL >>>   ")
         print("\n")
         if symbol_selector != "*":
-            symbol = symbolselector.selectsymbol(symbols,symbol_selector)
+            symbol = symbolselector.selectsymbol(symbols, symbol_selector)
     else:
-        click.echo(click.style("symbol_0" + "\n", fg = "red"))
+        click.echo(click.style("[symbol_0]" + "\n", fg = "red"))
         symbol_selector = "symbol_0"
-        symbol = symbols
+        symbol = symbolselector.selectsymbol(symbols, symbol_selector)
     click.echo(click.style(symbol_selector,fg = "red") + click.style(" selected!\n", fg = "blue"))
     if symbol_selector != "*":
         click.echo(click.style("[Symbol description]", fg = "green") + click.style(":" ,fg = "blue") + click.style( symbol.description +"\n", fg = "magenta"))
@@ -33,11 +34,11 @@ def manipulate_menu(symbols):
         click.echo(click.style("[3]", fg = "green")+ click.style(": Split\n", fg = "blue"))
         click.echo(click.style("[4]", fg="green") + click.style(": Rename symbol\n", fg="blue"))
         click.echo(click.style("[5]", fg="green") + click.style(": Edit symbol description\n", fg="blue"))
-        click.echo(click.style("[6]", fg="green") + click.style(": Generate packet according to symbol", fg="blue") + click.style("[STRESSFULL]\n",fg = "red"))
+        click.echo(click.style("[6]", fg="green") + click.style(": Generate packet according to symbol", fg="blue") +click.style("[WARNING]: STRESSFUL\n", fg="yellow"))
         click.echo(click.style("[7]", fg="green") + click.style(": Manipulate Fields\n", fg="blue"))
         click.echo(click.style("[8]", fg="green") + click.style(": Encode symbol\n", fg="blue"))
         click.echo(click.style("[9]", fg="green") + click.style(": Search for data relations (CRC, IP etc.)\n", fg="blue"))
-        click.echo(click.style("[R]", fg="green") + click.style(": RelationFinder\n", fg="blue"))
+        click.echo(click.style("[R]", fg="green") + click.style(": RelationFinder", fg="blue") + click.style("[WARNING]: LONG PROCESS...\n", fg="yellow"))
         click.echo(click.style("[B]", fg="green") + click.style(": Back to main menu\n", fg="blue"))
     else:
         click.echo(click.style("Manipulate symbols:\n", fg="blue"))
@@ -45,7 +46,8 @@ def manipulate_menu(symbols):
         click.echo(click.style("[2]", fg="green") + click.style(": Clusterize\n", fg="blue"))
         click.echo(click.style("[3]", fg="green") + click.style(": Split\n", fg="blue"))
         click.echo(click.style("[4]", fg="green") + click.style(": Encode symbols\n", fg="blue"))
-        click.echo(click.style("[R]", fg="green") + click.style(": RelationFinder\n", fg="blue"))
+        click.echo(click.style("[5]", fg="green") + click.style(": Manipulate fields\n", fg="blue"))
+        click.echo(click.style("[R]", fg="green") + click.style(": RelationFinder", fg="blue") + click.style("[WARNING]: LONG PROCESS...\n", fg="yellow"))
         click.echo(click.style("[B]", fg="green") + click.style(": Back to main menu\n", fg="blue"))
     print("\n")
     selector = input("PLEASE SELECT A MENU CHOICE >>>  ")
@@ -67,6 +69,9 @@ def manipulate_menu_choice(selector,symbol_selector,symbols):
         elif (selector == "4"):
             click.echo(click.style("ENCODING MENU\n", fg="yellow"))
             encoding_menu(symbols, symbol_selector)
+        elif (selector == "5"):
+            click.echo(click.style("MANIPULATE FIELDS MENU\n", fg="yellow"))
+            field_manipulate_menu(symbols, symbol_selector)
         elif(selector == "R"):
             click.echo(click.style("RELATION FINDER\n", fg="yellow"))
             relationfinder_menu(symbol_selector,symbols)
@@ -118,18 +123,14 @@ def display_symbols(symbol_selector, symbols):
 
     old_stdout = sys.stdout
     sys.stdout = tempstdout = io.StringIO()
-    if isinstance(symbols, list):
-        if symbol_selector == "*":
-            for symbol in symbols:
-                click.echo(click.style("[", fg="red") + click.style(symbol.name) + click.style("]", fg="red"))
-                print(symbol)
-        else:
-            symbol = symbolselector.selectsymbol(symbols, symbol_selector)
-            click.echo(click.style("[", fg = "red") + click.style(symbol.name) + click.style("]",fg = "red"))
+    if symbol_selector == "*":
+        for symbol in symbols:
+            click.echo(click.style("[", fg="red") + click.style(symbol.name) + click.style("]", fg="red"))
             print(symbol)
     else:
-        click.echo(click.style("[", fg="red") + click.style(symbol_selector) + click.style("]", fg="red"))
-        print(symbols)
+        symbol = symbolselector.selectsymbol(symbols, symbol_selector)
+        click.echo(click.style("[", fg="red") + click.style(symbol.name) + click.style("]", fg="red"))
+        print(symbol)
     sys.stdout = old_stdout
     click.echo_via_pager(tempstdout.getvalue())
     manipulate_menu(symbols)
@@ -152,7 +153,7 @@ def edit_symbol_description(symbols,symbol_selector):
     click.echo(click.style(symbol_selector, fg="red") + click.style(" selected!\n", fg="blue"))
     print("\n")
     if isinstance(symbols,list):
-        symbol = symbolselector.selectsymbol(symbols,symbol_selector)
+        symbol = symbolselector.selectsymbol(symbols, symbol_selector)
     else:
         symbol = symbols
     click.echo(click.style("[Current symbol description]", fg = "green") + click.style(":" ,fg = "blue") + click.style( symbol.description + "\n", fg = "magenta"))
@@ -163,16 +164,16 @@ def edit_symbol_description(symbols,symbol_selector):
     manipulate_menu(symbols)
 
 def packet_generator(symbols,symbol_selector):
-    symbol = symbolselector.selectsymbol(symbols,symbol_selector)
+    symbol = symbolselector.selectsymbol(symbols, symbol_selector)
     click.echo(click.style("[Generated message (Protocol layer)]\n",fg = "green"))
     click.echo(click.style(symbol.specialize(),fg = "red"))
     manipulate_menu(symbols)
 
 #IMPORTS AT BOTTOM BECAUSE TEMPORARY FIX TO CIRCULAR DEPENDENCY http://effbot.org/zone/import-confusion.htm
 
-from clusterizemenu import clusterize_menu
-from splitmenu import split_menu
-from fieldmanipulatemenu import field_manipulate_menu
-from encodingmenu import encoding_menu
-from Relation_finder import relationfinder_menu
-from dataSeekers import dataSeeker_menu
+from menus.clusterizemenu import clusterize_menu
+from menus.splitmenu import split_menu
+from menus.fieldmanipulatemenu import field_manipulate_menu
+from menus.encodingmenu import encoding_menu
+from seekers.Relation_finder import relationfinder_menu
+from menus.dataSeekersmenu import dataSeeker_menu

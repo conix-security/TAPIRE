@@ -1,10 +1,9 @@
 import click
-
 from netzob.all import *
 
-import symbolselector
+from menus.manipulatemenu import manipulate_menu
+from utilitaries import symbolselector
 
-from manipulatemenu import manipulate_menu
 
 def encoding_menu(symbols,symbol_selector):
     click.echo(click.style("Available encodings:\n", fg="blue"))

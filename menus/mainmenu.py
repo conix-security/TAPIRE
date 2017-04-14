@@ -1,9 +1,10 @@
-import click
-import sys
 import pickle
-import IPython
+import sys
 
+import IPython
+import click
 from netzob.all import *
+
 
 def main_menu(symbols=None):
 
@@ -39,7 +40,7 @@ def main_menu_choice(selector,symbols):
         click.echo(click.style("MANIPULATE MENU\n", fg="yellow"))
         if symbols == None:
             messages = PCAPImporter.readFile(sys.argv[1]).values() + PCAPImporter.readFile(sys.argv[2]).values()
-            manipulate_menu(Symbol(messages=messages))
+            manipulate_menu([Symbol(name='symbol_0',messages=messages)])
         else:
             manipulate_menu(symbols)
     elif(selector == "3"):
@@ -61,5 +62,5 @@ def save_object(obj):
 
 #IMPORTS AT BOTTOM BECAUSE TEMPORARY FIX TO CIRCULAR DEPENDENCY http://effbot.org/zone/import-confusion.htm
 
-from manipulatemenu import manipulate_menu
-from pcapdisplaymenu import pcap_exchange_menu
+from menus.manipulatemenu import manipulate_menu
+from menus.pcapdisplaymenu import pcap_exchange_menu
