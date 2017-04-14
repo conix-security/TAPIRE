@@ -1,10 +1,11 @@
-import click
-import sys
 import io
+import sys
 
-import symbolselector
+import click
 
-from mainmenu import main_menu
+from menus.mainmenu import main_menu
+from utilitaries import symbolselector
+
 
 def manipulate_menu(symbols):
 
@@ -19,11 +20,11 @@ def manipulate_menu(symbols):
         symbol_selector = input(" PLEASE SELECT A SYMBOL >>>   ")
         print("\n")
         if symbol_selector != "*":
-            symbol = symbolselector.selectsymbol(symbols,symbol_selector)
+            symbol = symbolselector.selectsymbol(symbols, symbol_selector)
     else:
         click.echo(click.style("[symbol_0]" + "\n", fg = "red"))
         symbol_selector = "symbol_0"
-        symbol = symbolselector.selectsymbol(symbols,symbol_selector)
+        symbol = symbolselector.selectsymbol(symbols, symbol_selector)
     click.echo(click.style(symbol_selector,fg = "red") + click.style(" selected!\n", fg = "blue"))
     if symbol_selector != "*":
         click.echo(click.style("[Symbol description]", fg = "green") + click.style(":" ,fg = "blue") + click.style( symbol.description +"\n", fg = "magenta"))
@@ -152,7 +153,7 @@ def edit_symbol_description(symbols,symbol_selector):
     click.echo(click.style(symbol_selector, fg="red") + click.style(" selected!\n", fg="blue"))
     print("\n")
     if isinstance(symbols,list):
-        symbol = symbolselector.selectsymbol(symbols,symbol_selector)
+        symbol = symbolselector.selectsymbol(symbols, symbol_selector)
     else:
         symbol = symbols
     click.echo(click.style("[Current symbol description]", fg = "green") + click.style(":" ,fg = "blue") + click.style( symbol.description + "\n", fg = "magenta"))
@@ -163,16 +164,16 @@ def edit_symbol_description(symbols,symbol_selector):
     manipulate_menu(symbols)
 
 def packet_generator(symbols,symbol_selector):
-    symbol = symbolselector.selectsymbol(symbols,symbol_selector)
+    symbol = symbolselector.selectsymbol(symbols, symbol_selector)
     click.echo(click.style("[Generated message (Protocol layer)]\n",fg = "green"))
     click.echo(click.style(symbol.specialize(),fg = "red"))
     manipulate_menu(symbols)
 
 #IMPORTS AT BOTTOM BECAUSE TEMPORARY FIX TO CIRCULAR DEPENDENCY http://effbot.org/zone/import-confusion.htm
 
-from clusterizemenu import clusterize_menu
-from splitmenu import split_menu
-from fieldmanipulatemenu import field_manipulate_menu
-from encodingmenu import encoding_menu
-from Relation_finder import relationfinder_menu
-from dataSeekers import dataSeeker_menu
+from menus.clusterizemenu import clusterize_menu
+from menus.splitmenu import split_menu
+from menus.fieldmanipulatemenu import field_manipulate_menu
+from menus.encodingmenu import encoding_menu
+from seekers.Relation_finder import relationfinder_menu
+from menus.dataSeekersmenu import dataSeeker_menu

@@ -1,9 +1,10 @@
-import click
-import sys
 import pickle
-import IPython
+import sys
 
+import IPython
+import click
 from netzob.all import *
+
 
 def main_menu(symbols=None):
 
@@ -61,5 +62,5 @@ def save_object(obj):
 
 #IMPORTS AT BOTTOM BECAUSE TEMPORARY FIX TO CIRCULAR DEPENDENCY http://effbot.org/zone/import-confusion.htm
 
-from manipulatemenu import manipulate_menu
-from pcapdisplaymenu import pcap_exchange_menu
+from menus.manipulatemenu import manipulate_menu
+from menus.pcapdisplaymenu import pcap_exchange_menu

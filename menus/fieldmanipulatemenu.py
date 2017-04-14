@@ -1,13 +1,13 @@
 import io
 import sys
-import click
 
+import click
 from netzob.all import *
 
-import symbolselector
+from menus.manipulatemenu import manipulate_menu
+from menus.splitmenu import split_menu
+from utilitaries import symbolselector
 
-from manipulatemenu import manipulate_menu
-from splitmenu import split_menu
 
 def field_manipulate_menu(symbols, symbol_selector):
     if symbol_selector == "*":
@@ -26,7 +26,7 @@ def field_manipulate_menu(symbols, symbol_selector):
         field_selector = input(" PLEASE SELECT A FIELD >>>   ")
         print("\n")
         if field_selector != "*":
-            field = symbolselector.selectsymbol(symbol.fields,field_selector)
+            field = symbolselector.selectsymbol(symbol.fields, field_selector)
     else:
         if symbol.fields[0].name ==  None :
             click.echo(click.style("Field-0" + "\n", fg = "red"))
@@ -143,7 +143,7 @@ def display_field(fields,field_selector,symbol,symbol_selector):
     old_stdout = sys.stdout
     sys.stdout = tempstdout = io.StringIO()
     if field_selector != "*":
-        field = symbolselector.selectsymbol(fields,field_selector)
+        field = symbolselector.selectsymbol(fields, field_selector)
         print(field)
     else:
         for field in fields:
@@ -159,7 +159,7 @@ def rename_field(fields,field_selector,symbols,symbol_selector):
     new_name = input("PLEASE INPUT A NEW NAME >>>   ")
     print("\n")
     if symbol_selector != "*":
-        field = symbolselector.selectsymbol(fields,field_selector)
+        field = symbolselector.selectsymbol(fields, field_selector)
         field.name = new_name
         click.echo(click.style(new_name, fg= "red") + click.style(" was saved!\n", fg= "blue"))
     else:
@@ -172,13 +172,13 @@ def edit_field_description(fields,field_selector,symbols,symbol_selector):
     click.echo(click.style(field_selector, fg= "red") + click.style(" selected!\n", fg= "blue"))
     print("\n")
     if symbol_selector != "*":
-        field = symbolselector.selectsymbol(fields,field_selector)
+        field = symbolselector.selectsymbol(fields, field_selector)
         click.echo(click.style("[Current symbol description]", fg= "green") + click.style(":", fg= "blue") + click.style(field.description + "\n", fg= "magenta"))
         print("\n")
     new_description = input("PLEASE INPUT A NEW DESCRIPTION >>>   ")
     print("\n")
     if symbol_selector != "*":
-        field = symbolselector.selectsymbol(fields,field_selector)
+        field = symbolselector.selectsymbol(fields, field_selector)
         field.description = new_description
         click.echo(click.style(new_description, fg= "red") + click.style(" was saved!\n", fg= "blue"))
     else:
@@ -187,16 +187,16 @@ def edit_field_description(fields,field_selector,symbols,symbol_selector):
     field_manipulate_menu(symbols, symbol_selector)
 
 def field_merger(fields,field_selector,symbols,symbol_selector):
-    field_merge_1 = symbolselector.selectsymbol(fields,field_selector)
+    field_merge_1 = symbolselector.selectsymbol(fields, field_selector)
     print("\n")
     click.echo(click.style(field_selector, fg="red") + click.style(" selected!\n", fg="blue"))
     print("\n")
     field_merge_2 = input("PLEASE SELECT SECOND FIELD TO MERGE WITH >>> ")
     print("\n")
-    field1 = symbolselector.selectsymbol(fields,field_merge_1)
-    field2 = symbolselector.selectsymbol(fields,field_merge_2)
+    field1 = symbolselector.selectsymbol(fields, field_merge_1)
+    field2 = symbolselector.selectsymbol(fields, field_merge_2)
     field_name = field1.name
     Format.mergeFields(field1,field2)
-    field = symbolselector.selectsymbol(symbolselector.selectsymbol(symbols,symbol_selector).fields,"Merge")
+    field = symbolselector.selectsymbol(symbolselector.selectsymbol(symbols, symbol_selector).fields, "Merge")
     field.name = field_name
     field_manipulate_menu(symbols, symbol_selector)

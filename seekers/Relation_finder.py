@@ -1,13 +1,12 @@
-import click
 import io
 import sys
 
-
+import click
 from netzob.all import *
 
-import symbolselector
+from menus.manipulatemenu import manipulate_menu
+from utilitaries import symbolselector
 
-from manipulatemenu import manipulate_menu
 
 def relationfinder_menu(symbol_selector,symbols):
     click.echo(click.style("FINDING RELATIONS ",fg="yellow"))

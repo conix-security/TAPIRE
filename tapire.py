@@ -4,8 +4,7 @@ import sys
 
 import click
 
-#PROJECT FILES
-from mainmenu import main_menu
+from menus.mainmenu import main_menu
 
 #logging.basicConfig(stream=sys.stdout, level=logging.CRITICAL)
 

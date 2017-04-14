@@ -1,16 +1,14 @@
 import click
-
 from netzob.all import *
 
-import symbolselector
-import replace_symbols
+from menus.manipulatemenu import manipulate_menu
+from utilitaries import symbolselector, replace_symbols
 
-from manipulatemenu import manipulate_menu
 
 #TODO Get Debug log output from Netgoblin CRCSEEKER
 def crcSeeker_menu(symbol_selector,symbols):
 
-    click.echo(click.style("Available Metadata:\n", fg="blue"))
+    click.echo(click.style("Create Fields?\n", fg="blue"))
     click.echo(click.style("[1] ", fg = "green") + click.style("[Create Fields]", fg = "blue") + '\n')
     click.echo(click.style("[2] ", fg = "green") + click.style("[Don't create Fields]", fg = "blue") + '\n')
     seeker_selector = input(" PLEASE SELECT A CHOICE >>>   ")
@@ -32,7 +30,7 @@ def crcSeeker_menu_choice(seeker_selector,symbols,symbol_selector):
                         not_work = False
                     except:
                         not_work = True
-        replace_symbols.replace_symb(symbols,symbol,new_symbols)
+        replace_symbols.replace_symb(symbols, symbol, new_symbols)
         manipulate_menu(symbols)
     elif (seeker_selector == "2"):
         seeker.findOnSymbol(symbol=symbol, create_fields=False)

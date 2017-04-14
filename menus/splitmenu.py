@@ -1,12 +1,10 @@
-
 import click
-import symbolselector
-
-from netzob.all import *
 from netzob.Common.Utils.TypedList import TypedList
+from netzob.all import *
 
-import converter
-from manipulatemenu import manipulate_menu
+from menus.manipulatemenu import manipulate_menu
+from utilitaries import symbolselector, converter
+
 
 def split_menu(symbol_selector, symbols,field_selector = None):
     click.echo(click.style("[1]", fg="green") + click.style(": Split static\n", fg="blue"))

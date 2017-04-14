@@ -1,10 +1,11 @@
-import click
 import io
 
+import click
 from netzob.all import *
 from scapy.all import *
 
-from mainmenu import main_menu
+from menus.mainmenu import main_menu
+
 
 def pcap_exchange_menu(symbols):
 

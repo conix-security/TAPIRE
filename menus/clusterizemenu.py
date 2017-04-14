@@ -1,12 +1,12 @@
-import sys
 import io
-import click
+import sys
 
+import click
 from netzob.all import *
 
-import symbolselector
-import replace_symbols
-from manipulatemenu import manipulate_menu
+from menus.manipulatemenu import manipulate_menu
+from utilitaries import symbolselector, replace_symbols
+
 
 def clusterize_menu(symbols,symbol_selector):
 
@@ -82,7 +82,7 @@ def clusterize_by_CRC(symbols,symbol_selector):
         messages = symbol.messages.list
     new_symbols = Format.clusterByCRC(messages)
     if symbol_selector != "*":
-        replace_symbols.replace_symb(symbols,symbol,new_symbols)
+        replace_symbols.replace_symb(symbols, symbol, new_symbols)
     else:
         symbols = new_symbols
     manipulate_menu(symbols)

@@ -1,10 +1,9 @@
 import click
-
 from netzob.all import *
 
-import symbolselector
+from menus.manipulatemenu import manipulate_menu
+from utilitaries import symbolselector
 
-from manipulatemenu import manipulate_menu
 
 #TODO Get Debug log output from Netgoblin IPSEEKER
 def metaseeker_menu(symbol_selector,symbols):
@@ -18,7 +17,7 @@ def metaseeker_menu(symbol_selector,symbols):
 def metaseeker_menu_choice(seeker_selector,symbols,symbol_selector):
 
     symbol = symbolselector.selectsymbol(symbols, symbol_selector)
-    seeker = IPSeeker()
+    seeker = IPFinder()
     click.echo(click.style("[1] ", fg="green") + click.style("[Search for two term IPs]", fg="cyan") + '\n')
     click.echo(click.style("[2] ", fg="green") + click.style("[Don't search for two term IPs]", fg="cyan") + '\n')
     two_t = input(" PLEASE SELECT A CHOICE >>>   ")
