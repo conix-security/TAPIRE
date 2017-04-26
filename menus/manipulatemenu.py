@@ -5,7 +5,7 @@ import click
 
 from menus.mainmenu import main_menu
 from utilitaries import symbolselector
-
+from utilitaries.window import tkinter_window
 
 def manipulate_menu(symbols):
 
@@ -133,6 +133,7 @@ def display_symbols(symbol_selector, symbols):
         print(symbol)
     sys.stdout = old_stdout
     click.echo_via_pager(tempstdout.getvalue())
+    tkinter_window(tempstdout.getvalue())
     manipulate_menu(symbols)
 
 def rename_symbol(symbols,symbol_selector):

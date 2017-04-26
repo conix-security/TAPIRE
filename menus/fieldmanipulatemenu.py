@@ -7,7 +7,7 @@ from netzob.all import *
 from menus.manipulatemenu import manipulate_menu
 from menus.splitmenu import split_menu
 from utilitaries import symbolselector
-
+from utilitaries.window import tkinter_window
 
 def field_manipulate_menu(symbols, symbol_selector):
     if symbol_selector == "*":
@@ -150,6 +150,7 @@ def display_field(fields,field_selector,symbol,symbol_selector):
             print(field)
     sys.stdout = old_stdout
     click.echo_via_pager(tempstdout.getvalue())
+    tkinter_window(tempstdout.getvalue())
     field_manipulate_menu(symbol, symbol_selector)
 
 def rename_field(fields,field_selector,symbols,symbol_selector):

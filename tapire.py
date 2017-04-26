@@ -8,6 +8,7 @@ from menus.mainmenu import main_menu
 
 #logging.basicConfig(stream=sys.stdout, level=logging.CRITICAL)
 
+
 def usage():
     click.echo("\n")
     click.echo(click.style("Usage:\n\n", fg="blue") + click.style(sys.argv[0], fg = "red") + click.style(" < pcap File 1 > ", fg = "red") + click.style("< pcap File 2 >",fg ="red")

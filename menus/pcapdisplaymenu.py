@@ -6,6 +6,7 @@ from scapy.all import *
 
 from menus.mainmenu import main_menu
 
+from utilitaries.window import tkinter_window
 
 def pcap_exchange_menu(symbols):
 
@@ -24,12 +25,12 @@ def pcap_exchange_menu_choice(selector,symbols):
         click.echo(click.style("DISPLAY AS RAW\n", fg="yellow"))
         display_raw_pcap(symbols)
     elif (selector == "2"):
-        click.echo(click.style("DISPLAY AS UTF-8\n", fg="yellow"))
+        click.echo(click.style("DISPLAY AS ISO-8859-1\n", fg="yellow"))
         display_utf8_pcap(symbols)
-    elif (selector == "3"):
-        click.echo(click.style("DISPLAY AS ISO\n", fg="yellow"))
-    elif (selector == "4"):
-        click.echo(click.style("DISPLAY AS ASCII\n", fg="yellow"))
+    #elif (selector == "3"):
+    #    click.echo(click.style("DISPLAY AS ISO\n", fg="yellow"))
+    #elif (selector == "4"):
+    #    click.echo(click.style("DISPLAY AS ASCII\n", fg="yellow"))
     elif (selector == "B"):
         main_menu(symbols)
     else:
@@ -52,6 +53,9 @@ def display_raw_pcap(symbols):
     sys.stdout = old_stdout
     #Print buffer in a pager
     click.echo_via_pager(click.style("<----------------------------------------PCAP 1:-------------------------------------->\n", fg = "red") + "\n" + tempstdout1.getvalue() +"\n" + click.style("<----------------------------------------PCAP 2:-------------------------------------->\n", fg = "red") +"\n" + tempstdout2.getvalue())
+    #Print buffer in tkinter window
+    buffer = "<----------------------------------------PCAP 1:-------------------------------------->\n" + tempstdout1.getvalue() +"\n" + "<----------------------------------------PCAP 2:-------------------------------------->\n"+ tempstdout2.getvalue()
+    tkinter_window(buffer)
     pcap_exchange_menu(symbols)
 
 def display_utf8_pcap(symbols):
@@ -70,4 +74,7 @@ def display_utf8_pcap(symbols):
         print(j)
     sys.stdout = old_stdout
     click.echo_via_pager(click.style("<----------------------------------------PCAP 1:-------------------------------------->\n", fg = "red") + "\n"+ buffer1.getvalue() + "\n" + click.style("<----------------------------------------PCAP 2:-------------------------------------->\n", fg = "red") + "\n" + buffer2.getvalue())
+    # Print buffer in tkinter window
+    buffer = "<----------------------------------------PCAP 1:-------------------------------------->\n" + buffer1.getvalue() + "\n" + "<----------------------------------------PCAP 2:-------------------------------------->\n" + buffer2.getvalue()
+    tkinter_window(buffer)
     pcap_exchange_menu(symbols)

@@ -35,4 +35,8 @@ def find_relations(symbol_selector,symbols):
         print("    " + str(p))
     sys.stdout = old_stdout
     click.echo_via_pager(tempstdout.getvalue())
+    #TODO Open IPYTHON shell to apply relation (add example code snippet)
+    #click.echo(click.style("Apply relation?\n", fg="blue"))
+    #click.echo(click.style("[1] ", fg = "green") + click.style("[Apply relation]", fg = "blue") + '\n')
+    #click.echo(click.style("[2] ", fg = "green") + click.style("[Don't apply relation]", fg = "blue") + '\n')
     manipulate_menu(symbols)

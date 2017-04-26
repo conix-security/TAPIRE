@@ -56,7 +56,7 @@ def main_menu_choice(selector,symbols):
 
 def save_object(obj):
     filename = input("PLEASE SELECT PROJECT NAME >>>")
-    with open(filename, 'wb') as output:
+    with open("./projects/"+filename, 'wb') as output:
         pickle.dump(obj, output, pickle.HIGHEST_PROTOCOL)
     main_menu(obj)
 
