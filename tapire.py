@@ -1,12 +1,12 @@
 #!/usr/bin/env python3.5
-#import logging
+import logging
 import sys
-
 import click
+import argparse
 
+import utilitaries.globalvars
 from menus.mainmenu import main_menu
 
-#logging.basicConfig(stream=sys.stdout, level=logging.CRITICAL)
 
 
 def usage():
@@ -17,11 +17,41 @@ def usage():
 
     exit(1)
 
-def main():
+def get_args():
+    parser = argparse.ArgumentParser(description="Tool for Assisting Protocol Inference and Reverse Engineering")
+    group1 = parser.add_mutually_exclusive_group(required=True)
+    group2 = parser.add_mutually_exclusive_group()
+    group3 = parser.add_mutually_exclusive_group()
+    group1.add_argument("-a", "-analyse", help="Analyses the provided pcaps", nargs='+',default=None)
+    group1.add_argument("-l","-load", help="Loads the provided project")
+    group2.add_argument("-g","--gui", help="Activates GUI display", action="store_true", default=False)
+    group3.add_argument("-v", "--verbose", help="Activates logging messages (Critical, Error, Warning, Info, Debug)", choices=['C','E','W','I','D'])
+    parser.add_argument('--version', action='version', version='%(prog)s Version 0.5')
+    args = parser.parse_args()
 
-    if len(sys.argv) < 3:
-        usage()
-    main_menu()
+    #SET GUI
+    if args.gui:
+        utilitaries.globalvars.GUI = args.gui
+    if args.verbose is not None:
+        if args.verbose == "D":
+            logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+        elif args.verbose == "C":
+            logging.basicConfig(stream=sys.stdout, level=logging.CRITICAL)
+        elif args.verbose == "E":
+            logging.basicConfig(stream=sys.stdout, level=logging.ERROR)
+        elif args.verbose == "W":
+            logging.basicConfig(stream=sys.stdout, level=logging.WARNING)
+        elif args.verbose == "I":
+            logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+    return args
+
+
+def main():
+    args = get_args()
+    #if len(sys.argv) < 2:
+    #    usage()
+        #print('toto')
+    main_menu(args=args)
 
 if __name__ == '__main__':
     main()

@@ -4,8 +4,8 @@ import click
 from netzob.all import *
 from scapy.all import *
 
+import utilitaries.globalvars
 from menus.mainmenu import main_menu
-
 from utilitaries.window import tkinter_window
 
 def pcap_exchange_menu(symbols):
@@ -39,42 +39,43 @@ def pcap_exchange_menu_choice(selector,symbols):
 
 def display_raw_pcap(symbols):
 
-    pcapFile1 = sys.argv[1]
-    pcap1 = rdpcap(pcapFile1)
-    pcapFile2 = sys.argv[2]
-    pcap2 = rdpcap(pcapFile2)
-    #Retrieve hexdump from scapy print function and redirect it to a buffer
-    old_stdout = sys.stdout
-    sys.stdout = tempstdout1 = io.StringIO()
-    pcap1.hexdump()
-    sys.stdout=old_stdout
-    sys.stdout = tempstdout2 = io.StringIO()
-    pcap2.hexdump()
-    sys.stdout = old_stdout
-    #Print buffer in a pager
-    click.echo_via_pager(click.style("<----------------------------------------PCAP 1:-------------------------------------->\n", fg = "red") + "\n" + tempstdout1.getvalue() +"\n" + click.style("<----------------------------------------PCAP 2:-------------------------------------->\n", fg = "red") +"\n" + tempstdout2.getvalue())
-    #Print buffer in tkinter window
-    buffer = "<----------------------------------------PCAP 1:-------------------------------------->\n" + tempstdout1.getvalue() +"\n" + "<----------------------------------------PCAP 2:-------------------------------------->\n"+ tempstdout2.getvalue()
+    pcap_list = []
+    for PCAPFile in utilitaries.globalvars.PCAPFiles:
+        pcap_list.append(rdpcap(PCAPFile))
+    tempstdout_list = []
+    for i, pcap in enumerate(pcap_list):
+        old_stdout = sys.stdout
+        tempstdout_list.append(io.StringIO())
+        sys.stdout = tempstdout_list[i]
+        pcap.hexdump()
+        sys.stdout = old_stdout
+    buffer = ""
+    for i, tempstdout in enumerate(tempstdout_list):
+        buffer += "<----------------------------------------PCAP "+ str(i)+" :-------------------------------------->\n" + tempstdout.getvalue() + "\n"
+    # Print buffer in a pager
+    click.echo_via_pager(buffer)
+    # Print buffer in tkinter window
     tkinter_window(buffer)
     pcap_exchange_menu(symbols)
 
 def display_utf8_pcap(symbols):
 
-    pcapFile1 = sys.argv[1]
-    pcapFile2 = sys.argv[2]
-    pcap1 = PCAPImporter.readFile(pcapFile1).values()
-    pcap2 = PCAPImporter.readFile(pcapFile2).values()
-    old_stdout = sys.stdout
-    sys.stdout = buffer1 = io.StringIO()
-    for i in pcap1:
-        print(i)
-    sys.stdout = old_stdout
-    sys.stdout = buffer2 = io.StringIO()
-    for j in pcap2:
-        print(j)
-    sys.stdout = old_stdout
-    click.echo_via_pager(click.style("<----------------------------------------PCAP 1:-------------------------------------->\n", fg = "red") + "\n"+ buffer1.getvalue() + "\n" + click.style("<----------------------------------------PCAP 2:-------------------------------------->\n", fg = "red") + "\n" + buffer2.getvalue())
+    pcap_list = []
+    for PCAPFile in utilitaries.globalvars.PCAPFiles:
+        pcap_list.append(rdpcap(PCAPFile))
+    tempstdout_list = []
+    for i, pcap in enumerate(pcap_list):
+        old_stdout = sys.stdout
+        tempstdout_list.append(io.StringIO())
+        sys.stdout = tempstdout_list[i]
+        for j in pcap:
+            print(j)
+        sys.stdout = old_stdout
+    buffer = ""
+    for i, tempstdout in enumerate(tempstdout_list):
+        buffer += "<----------------------------------------PCAP "+ str(i)+" :-------------------------------------->\n" + tempstdout.getvalue() + "\n"
+    # Print buffer in a pager
+    click.echo_via_pager(buffer)
     # Print buffer in tkinter window
-    buffer = "<----------------------------------------PCAP 1:-------------------------------------->\n" + buffer1.getvalue() + "\n" + "<----------------------------------------PCAP 2:-------------------------------------->\n" + buffer2.getvalue()
     tkinter_window(buffer)
     pcap_exchange_menu(symbols)

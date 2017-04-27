@@ -1,6 +1,6 @@
-==========================================
+=====================================================================
 TAPIRE: Tool for Assisting Protocol Inference and Reverse Engineering
-==========================================
+=====================================================================
 
 This is a tool developed by Conix: http://www.conix.fr/en/
 
@@ -25,6 +25,7 @@ Includes:
 * Symbol renaming, description
 * Field renaming, description, merging
 * Most netzob methods
+* Gui window to display symbols
 
 TODO:
 =====
@@ -32,7 +33,6 @@ TODO:
 * ClusterizebyApplicativeData
 * Helpstrings
 * Wrong symbol or field selection
-* Gui window to display symbols
 * Dynamic analysis (message generation from infered symbols, automaton generation, fuzzing, live capture and live display of new fields)
 * Wireshark dissector
 * Get netgoblin log output for IPseeker, CRC32Seeker, SizeSeeker
