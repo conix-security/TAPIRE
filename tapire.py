@@ -43,8 +43,8 @@ def get_args():
             logging.basicConfig(stream=sys.stdout, level=logging.WARNING)
         elif args.verbose == "I":
             logging.basicConfig(stream=sys.stdout, level=logging.INFO)
-    if args.analyse is not None and len(args.analyse) < 2:
-        parser.error("-analyse needs at least two pcap files!")
+    if args.a is not None and len(args.a) < 2:
+        parser.error("Analyse mode needs at least two pcap files!")
     return args
 
 

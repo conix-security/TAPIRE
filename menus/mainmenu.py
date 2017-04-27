@@ -8,8 +8,8 @@ import utilitaries.globalvars
 
 def main_menu(symbols=None,args=None):
 
-    if(symbols is None and args.load is not None):
-        with open(args.load, 'rb') as file:
+    if(symbols is None and args.l is not None):
+        with open(args.l, 'rb') as file:
             symbol_dict = pickle.load(file)
             symbols = symbol_dict['Symbol']
             utilitaries.globalvars.PCAPFiles = symbol_dict['messages']
