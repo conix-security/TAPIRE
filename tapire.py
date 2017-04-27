@@ -22,7 +22,7 @@ def get_args():
     group1 = parser.add_mutually_exclusive_group(required=True)
     group2 = parser.add_mutually_exclusive_group()
     group3 = parser.add_mutually_exclusive_group()
-    group1.add_argument("-a", "-analyse", help="Analyses the provided pcaps", nargs='+',default=None)
+    group1.add_argument("-a", "-analyse", help="Analyses the provided pcaps (minimum 2)", nargs='+',default=None)
     group1.add_argument("-l","-load", help="Loads the provided project")
     group2.add_argument("-g","--gui", help="Activates GUI display", action="store_true", default=False)
     group3.add_argument("-v", "--verbose", help="Activates logging messages (Critical, Error, Warning, Info, Debug)", choices=['C','E','W','I','D'])
@@ -43,6 +43,8 @@ def get_args():
             logging.basicConfig(stream=sys.stdout, level=logging.WARNING)
         elif args.verbose == "I":
             logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+    if args.analyse is not None and len(args.analyse) < 2:
+        parser.error("-analyse needs at least two pcap files!")
     return args
 
 
