@@ -1,10 +1,11 @@
 from tkinter import font
 from tkinter import *
 
-GUI_ON = True
+import utilitaries.globalvars
+
 
 def tkinter_window(buffer):
-    if GUI_ON:
+    if utilitaries.globalvars.GUI:
         root = Tk()
         # Specify font
         my_font = font.Font(root=root, family='Courier', size=10)
