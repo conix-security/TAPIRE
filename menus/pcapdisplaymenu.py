@@ -62,7 +62,7 @@ def display_utf8_pcap(symbols):
 
     pcap_list = []
     for PCAPFile in utilitaries.globalvars.PCAPFiles:
-        pcap_list.append(rdpcap(PCAPFile))
+        pcap_list.append(PCAPImporter.readFile(PCAPFile).values())
     tempstdout_list = []
     for i, pcap in enumerate(pcap_list):
         old_stdout = sys.stdout
