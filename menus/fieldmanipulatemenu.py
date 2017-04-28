@@ -6,6 +6,7 @@ from netzob.all import *
 
 from menus.manipulatemenu import manipulate_menu
 from menus.splitmenu import split_menu
+from menus.encodingmenu import encoding_menu
 from utilitaries import symbolselector
 from utilitaries.window import tkinter_window
 
@@ -97,7 +98,7 @@ def field_manipulate_menu_choice(selector,field_selector,fields,symbols,symbol_s
                 encoding_menu(fields, field_selector)
             elif (selector == "6"):
                 click.echo(click.style("FIELD SPLIT MENU\n", fg="yellow"))
-                split_menu(field_selector,fields)
+                split_menu(field_selector,fields,parent=symbols)
                 manipulate_menu(symbols)
             elif (selector == "B"):
                 click.echo(click.style("BACK TO MANIPULATE MENU\n", fg= "yellow"))
