@@ -29,6 +29,7 @@ def clusterize_menu_choice(selector,symbols,symbol_selector):
         clusterize_by_size(symbols, symbol_selector)
     elif (selector == "2"):
         click.echo(click.style("CLUSTER BY ALIGNMENT\n", fg="yellow"))
+        clusterize_by_alignment(symbols,symbol_selector)
     elif (selector == "3"):
         click.echo(click.style("CLUSTER BY APPLICATIVE DATA\n", fg="yellow"))
     elif (selector == "4" and symbol_selector != "*"):
