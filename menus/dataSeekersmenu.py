@@ -5,30 +5,34 @@ from seekers.IPseeker import metaseeker_menu
 from seekers.crcseeker import crcSeeker_menu
 from seekers.headerSeeker import headerSeeker_menu
 from seekers.sizeSeeker import sizeSeeker_menu
+from seekers.entropy_finder import entropyfinder_menu
 
-#TODO Get Debug log output from Netgoblin CRCSEEKER
 def dataSeeker_menu(symbol_selector,symbols):
 
     click.echo(click.style("Available relation seekers:\n", fg="blue"))
-    click.echo(click.style("[1] ", fg = "green") + click.style("[IP Seeker]", fg = "blue") + '\n')
-    click.echo(click.style("[2] ", fg = "green") + click.style("[CRC32 Seeker]", fg = "blue") + '\n')
-    click.echo(click.style("[3] ", fg = "green") + click.style("[Header Seeker]", fg = "blue") + '\n')
-    click.echo(click.style("[4] ", fg="green") + click.style("[Size Seeker]", fg="blue") + '\n')
+    click.echo(click.style("[1] ", fg = "green") + click.style("[Entropy seeker]", fg = "blue") + click.style("(Recommended first)", fg = "magenta") + '\n')
+    click.echo(click.style("[2] ", fg = "green") + click.style("[IP Seeker]", fg = "blue") + '\n')
+    click.echo(click.style("[3] ", fg = "green") + click.style("[CRC32 Seeker]", fg = "blue") + '\n')
+    click.echo(click.style("[4] ", fg = "green") + click.style("[Header Seeker]", fg = "blue") + '\n')
+    click.echo(click.style("[5] ", fg="green") + click.style("[Size Seeker]", fg="blue") + '\n')
     seeker_selector = input(" PLEASE SELECT A CHOICE >>>   ")
     dataSeeker_menu_choice(seeker_selector, symbols, symbol_selector)
 
 def dataSeeker_menu_choice(seeker_selector,symbols,symbol_selector):
 
     if (seeker_selector == "1"):
+        click.echo(click.style("ANALYSE ENTROPY\n", fg="yellow"))
+        entropyfinder_menu(symbol_selector, symbols)
+    elif (seeker_selector == "2"):
         click.echo(click.style("SEARCH FOR IPS\n", fg="yellow"))
         metaseeker_menu(symbol_selector, symbols)
-    elif (seeker_selector == "2"):
+    elif (seeker_selector == "3"):
         click.echo(click.style("SEARCH FOR CRC32\n", fg="yellow"))
         crcSeeker_menu(symbol_selector, symbols)
-    elif (seeker_selector == "3"):
+    elif (seeker_selector == "4"):
         click.echo(click.style("SEARCH FOR HEADER AND DATA FIELDS\n", fg="yellow"))
         headerSeeker_menu(symbols)
-    elif (seeker_selector == "4"):
+    elif (seeker_selector == "5"):
         click.echo(click.style("SEARCH FOR SIZE\n", fg="yellow"))
         sizeSeeker_menu(symbol_selector,symbols)
     else:

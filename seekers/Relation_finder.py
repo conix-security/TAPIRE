@@ -1,7 +1,7 @@
 import io
 import sys
-
 import click
+
 from netzob.all import *
 
 from menus.manipulatemenu import manipulate_menu
@@ -11,7 +11,7 @@ from utilitaries import symbolselector
 def relationfinder_menu(symbol_selector,symbols):
     click.echo(click.style("FINDING RELATIONS ",fg="yellow"))
     find_relations(symbol_selector,symbols)
-
+    manipulate_menu(symbols)
 
 def find_relations(symbol_selector,symbols):
 
@@ -25,7 +25,6 @@ def find_relations(symbol_selector,symbols):
         symbol = symbolselector.selectsymbol(symbols, symbol_selector)
         rels += RelationFinder.findOnSymbol(symbol)
         display_results(rels)
-    manipulate_menu(symbols)
 
 def display_results(rels,pager=True):
     old_stdout = sys.stdout
