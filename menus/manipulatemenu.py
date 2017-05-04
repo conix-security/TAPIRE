@@ -3,31 +3,20 @@ import sys
 
 import click
 
+from netzob.all import *
+
+from utilitaries.availablesymboldisplayer import display_available_symbols
 from menus.mainmenu import main_menu
 from utilitaries import symbolselector
 from utilitaries.window import tkinter_window
 
+
 def manipulate_menu(symbols):
 
-    click.echo(click.style("Available symbols:\n", fg="blue"))
-    if len(symbols) > 1:
-        old_stdout = sys.stdout
-        sys.stdout = tempstdout = io.StringIO()
-        print(symbols)
-        sys.stdout = old_stdout
-        click.echo(click.style(tempstdout.getvalue() + "\n", fg="red"))
-        print("\n")
-        symbol_selector = input(" PLEASE SELECT A SYMBOL >>>   ")
-        print("\n")
-        if symbol_selector != "*":
-            symbol = symbolselector.selectsymbol(symbols, symbol_selector)
-    else:
-        click.echo(click.style("[symbol_0]" + "\n", fg = "red"))
-        symbol_selector = "symbol_0"
-        symbol = symbolselector.selectsymbol(symbols, symbol_selector)
+    symbol,symbol_selector = display_available_symbols(symbols)
     click.echo(click.style(symbol_selector,fg = "red") + click.style(" selected!\n", fg = "blue"))
     if symbol_selector != "*":
-        click.echo(click.style("[Symbol description]", fg = "green") + click.style(":" ,fg = "blue") + click.style( symbol.description +"\n", fg = "magenta"))
+        click.echo(click.style("[Symbol description]", fg = "green") + click.style(":" ,fg = "blue") + click.style(symbol.description +"\n", fg = "magenta"))
         click.echo(click.style("Manipulate symbols:\n", fg = "blue"))
         click.echo(click.style("[1]", fg = "green") + click.style(": Display symbols\n", fg = "blue"))
         click.echo(click.style("[2]", fg = "green")+ click.style(": Clusterize\n", fg = "blue"))
@@ -38,7 +27,8 @@ def manipulate_menu(symbols):
         click.echo(click.style("[7]", fg="green") + click.style(": Manipulate Fields\n", fg="blue"))
         click.echo(click.style("[8]", fg="green") + click.style(": Encode symbol\n", fg="blue"))
         click.echo(click.style("[9]", fg="green") + click.style(": Search for data relations (CRC, IP etc.)\n", fg="blue"))
-        click.echo(click.style("[R]", fg="green") + click.style(": RelationFinder", fg="blue") + click.style("[WARNING]: LONG PROCESS...\n", fg="yellow"))
+        click.echo(click.style("[R]", fg="green") + click.style(": RelationFinder", fg="blue") + click.style(" [WARNING]: LONG PROCESS...\n", fg="yellow"))
+        click.echo(click.style("[M]", fg="green") + click.style(": Merge two symbols", fg="blue") + click.style(" [WARNING]: Changes Fields\n", fg="yellow"))
         click.echo(click.style("[B]", fg="green") + click.style(": Back to main menu\n", fg="blue"))
     else:
         click.echo(click.style("Manipulate symbols:\n", fg="blue"))
@@ -47,7 +37,8 @@ def manipulate_menu(symbols):
         click.echo(click.style("[3]", fg="green") + click.style(": Split\n", fg="blue"))
         click.echo(click.style("[4]", fg="green") + click.style(": Encode symbols\n", fg="blue"))
         click.echo(click.style("[5]", fg="green") + click.style(": Manipulate fields\n", fg="blue"))
-        click.echo(click.style("[R]", fg="green") + click.style(": RelationFinder", fg="blue") + click.style("[WARNING]: LONG PROCESS...\n", fg="yellow"))
+        click.echo(click.style("[R]", fg="green") + click.style(": RelationFinder", fg="blue") + click.style(" [WARNING]: LONG PROCESS...\n", fg="yellow"))
+        click.echo(click.style("[M]", fg="green") + click.style(": Merge two symbols", fg="blue") + click.style(" [WARNING]: Changes Fields\n", fg="yellow"))
         click.echo(click.style("[B]", fg="green") + click.style(": Back to main menu\n", fg="blue"))
     print("\n")
     selector = input("PLEASE SELECT A MENU CHOICE >>>  ")
@@ -72,6 +63,9 @@ def manipulate_menu_choice(selector,symbol_selector,symbols):
         elif (selector == "5"):
             click.echo(click.style("MANIPULATE FIELDS MENU\n", fg="yellow"))
             field_manipulate_menu(symbols, symbol_selector)
+        elif (selector == "M"):
+            click.echo(click.style("MERGE SYMBOLS\n", fg="yellow"))
+            merge_symbols(symbols)
         elif(selector == "R"):
             click.echo(click.style("RELATION FINDER\n", fg="yellow"))
             relationfinder_menu(symbol_selector,symbols)
@@ -112,6 +106,9 @@ def manipulate_menu_choice(selector,symbol_selector,symbols):
         elif(selector == "R"):
             click.echo(click.style("RELATION FINDER\n", fg="yellow"))
             relationfinder_menu(symbol_selector,symbols)
+        elif (selector == "M"):
+            click.echo(click.style("MERGE SYMBOLS\n", fg="yellow"))
+            merge_symbols(symbols)
         elif (selector == "B"):
             click.echo(click.style("BACK TO MAIN MENU\n", fg="yellow"))
             main_menu(symbols)
@@ -168,6 +165,27 @@ def packet_generator(symbols,symbol_selector):
     symbol = symbolselector.selectsymbol(symbols, symbol_selector)
     click.echo(click.style("[Generated message (Protocol layer)]\n",fg = "green"))
     click.echo(click.style(symbol.specialize(),fg = "red"))
+    manipulate_menu(symbols)
+
+def merge_symbols(symbols):
+    symbolselector1 = symbolselector2 = "*"
+    while symbolselector1 == "*" or symbolselector2 == "*" or symbolselector1 == symbolselector2:
+        symbol1,symbolselector1 = display_available_symbols(symbols)
+        if symbolselector1 == "*":
+            click.echo(click.style("[ERROR]", fg="red") + click.style(": Can't be *\n", fg="red"))
+        symbol2,symbolselector2 = display_available_symbols(symbols,symbol1)
+        if symbolselector2 == "*":
+            click.echo(click.style("[ERROR]", fg="red") + click.style(": Can't be *\n", fg="red"))
+        elif symbolselector2 ==symbolselector1:
+            click.echo(click.style("[ERROR]", fg="red") + click.style(": Please select two different symbols!\n", fg="red"))
+    #Remove all fields from sym1 and sym2
+    symbol1.fields = [Field()]
+    #Cluster messages into one symbol
+    symbol1.messages.list += symbol2.messages.list
+    #Remove symbol2 from symbols list
+    symbols.remove(symbol2)
+    #Apply sequence alignment
+    Format.splitAligned(symbol1,doInternalSlick=True)
     manipulate_menu(symbols)
 
 #IMPORTS AT BOTTOM BECAUSE TEMPORARY FIX TO CIRCULAR DEPENDENCY http://effbot.org/zone/import-confusion.htm
