@@ -29,6 +29,7 @@ def manipulate_menu(symbols):
         click.echo(click.style("[9]", fg="green") + click.style(": Search for data relations (CRC, IP etc.)\n", fg="blue"))
         click.echo(click.style("[R]", fg="green") + click.style(": RelationFinder", fg="blue") + click.style(" [WARNING]: LONG PROCESS...\n", fg="yellow"))
         click.echo(click.style("[M]", fg="green") + click.style(": Merge two symbols", fg="blue") + click.style(" [WARNING]: Changes Fields\n", fg="yellow"))
+        click.echo(click.style("[D]", fg="green") + click.style(": Delete useless symbols", fg="blue") + "\n")
         click.echo(click.style("[B]", fg="green") + click.style(": Back to main menu\n", fg="blue"))
     else:
         click.echo(click.style("Manipulate symbols:\n", fg="blue"))
@@ -39,6 +40,7 @@ def manipulate_menu(symbols):
         click.echo(click.style("[5]", fg="green") + click.style(": Manipulate fields\n", fg="blue"))
         click.echo(click.style("[R]", fg="green") + click.style(": RelationFinder", fg="blue") + click.style(" [WARNING]: LONG PROCESS...\n", fg="yellow"))
         click.echo(click.style("[M]", fg="green") + click.style(": Merge two symbols", fg="blue") + click.style(" [WARNING]: Changes Fields\n", fg="yellow"))
+        click.echo(click.style("[D]", fg="green") + click.style(": Delete useless symbols", fg="blue") + "\n")
         click.echo(click.style("[B]", fg="green") + click.style(": Back to main menu\n", fg="blue"))
     print("\n")
     selector = input("PLEASE SELECT A MENU CHOICE >>>  ")
@@ -69,6 +71,9 @@ def manipulate_menu_choice(selector,symbol_selector,symbols):
         elif(selector == "R"):
             click.echo(click.style("RELATION FINDER\n", fg="yellow"))
             relationfinder_menu(symbol_selector,symbols)
+        elif (selector == "D"):
+            click.echo(click.style("DELETE USELESS SYMBOLS\n", fg="yellow"))
+            delete_useless_symbols(symbols)
         elif (selector == "B"):
             click.echo(click.style("BACK TO MAIN MENU\n", fg="yellow"))
             main_menu(symbols)
@@ -109,6 +114,9 @@ def manipulate_menu_choice(selector,symbol_selector,symbols):
         elif (selector == "M"):
             click.echo(click.style("MERGE SYMBOLS\n", fg="yellow"))
             merge_symbols(symbols)
+        elif (selector == "D"):
+            click.echo(click.style("DELETE USELESS SYMBOLS\n", fg="yellow"))
+            delete_useless_symbols(symbols)
         elif (selector == "B"):
             click.echo(click.style("BACK TO MAIN MENU\n", fg="yellow"))
             main_menu(symbols)
@@ -187,6 +195,42 @@ def merge_symbols(symbols):
     #Apply sequence alignment
     Format.splitAligned(symbol1,doInternalSlick=True)
     manipulate_menu(symbols)
+
+def delete_useless_symbols(symbols):
+    #Create a set of all messages
+    all_messages = []
+    for symbol in symbols:
+        for message in symbol.messages:
+            all_messages.append(message)
+    all_messages_set = set(all_messages)
+    #Get all possible sessions:
+    all_sessions = []
+    all_sessions_symbols = []
+    for message in all_messages_set:
+        all_sessions.append(message.session.abstract(symbols))
+    all_sessions_set = create_set(all_sessions)
+    for session in all_sessions_set:
+        session_symbols = []
+        for tuple_sym in session:
+            session_symbols.append(tuple_sym[2])
+        all_sessions_symbols.append(session_symbols)
+    all_sessions_set = create_set(all_sessions_symbols)
+    #Check that symbol is in all sets
+    for symbol in symbols:
+        for session in all_sessions_set:
+            if symbol not in session:
+                symbols.remove(symbol)
+                break
+    manipulate_menu(symbols)
+
+def create_set(list_to_set):
+    for element in list_to_set:
+        buffer = element
+        while buffer in list_to_set:
+            list_to_set.remove(buffer)
+        list_to_set.append(buffer)
+    return list_to_set
+
 
 #IMPORTS AT BOTTOM BECAUSE TEMPORARY FIX TO CIRCULAR DEPENDENCY http://effbot.org/zone/import-confusion.htm
 
