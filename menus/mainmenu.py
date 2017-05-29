@@ -36,6 +36,7 @@ def main_menu(symbols=None,args=None):
     click.echo(click.style("[2]", fg = "green")+ click.style(": Manipulate\n", fg = "blue"))
     click.echo(click.style("[3]", fg = "green")+ click.style(": Save project\n", fg = "blue"))
     click.echo(click.style("[4]", fg = "green")+ click.style(": Open IPython shell\n",fg = "blue"))
+    click.echo(click.style("[5]", fg="green") + click.style(": Export to wireshark\n", fg="blue"))
     selector = input(" PLEASE INPUT SELECTION >>>  ")
     main_menu_choice(selector,symbols)
 
@@ -54,6 +55,9 @@ def main_menu_choice(selector,symbols):
         click.echo(click.style("IPYTHON SHELL",fg="yellow"))
         IPython.embed()
         main_menu(symbols)
+    elif (selector == "5"):
+        click.echo(click.style("WIRESHARK", fg="yellow"))
+        wireshark_exporter_menu(symbols)
     else:
         click.echo(click.style("ERROR : WRONG SELECTION\n", fg="yellow"))
         main_menu(symbols)
@@ -69,7 +73,9 @@ def save_object(obj):
         pickle.dump(symbol_dict, output, pickle.HIGHEST_PROTOCOL)
     main_menu(obj)
 
+
 #IMPORTS AT BOTTOM BECAUSE TEMPORARY FIX TO CIRCULAR DEPENDENCY http://effbot.org/zone/import-confusion.htm
 
 from menus.manipulatemenu import manipulate_menu
 from menus.pcapdisplaymenu import pcap_exchange_menu
+from exporter.wiresharkdissector import wireshark_exporter_menu
