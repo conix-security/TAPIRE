@@ -22,4 +22,5 @@ def wireshark_exporter_menu(symbols):
 def wireshark_exporter(symbols,dest_file,port,TCP):
     exporter  = WiresharkExporter()
     exporter.export_to_wireshark(symbols,dest_file,port,TCP)
+    print("Export done!\n")
     main_menu(symbols)

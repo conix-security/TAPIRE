@@ -3,7 +3,6 @@ import pickle
 import IPython
 import click
 from netzob.all import *
-
 import utilitaries.globalvars
 
 def main_menu(symbols=None,args=None):
@@ -36,7 +35,7 @@ def main_menu(symbols=None,args=None):
     click.echo(click.style("[2]", fg = "green")+ click.style(": Manipulate\n", fg = "blue"))
     click.echo(click.style("[3]", fg = "green")+ click.style(": Save project\n", fg = "blue"))
     click.echo(click.style("[4]", fg = "green")+ click.style(": Open IPython shell\n",fg = "blue"))
-    click.echo(click.style("[5]", fg="green") + click.style(": Export to wireshark\n", fg="blue"))
+    click.echo(click.style("[5]", fg="green") + click.style(": Export project parser\n", fg="blue"))
     selector = input(" PLEASE INPUT SELECTION >>>  ")
     main_menu_choice(selector,symbols)
 
@@ -56,8 +55,8 @@ def main_menu_choice(selector,symbols):
         IPython.embed()
         main_menu(symbols)
     elif (selector == "5"):
-        click.echo(click.style("WIRESHARK", fg="yellow"))
-        wireshark_exporter_menu(symbols)
+        click.echo(click.style("EXPORT MENU", fg="yellow"))
+        exporter_menu(symbols)
     else:
         click.echo(click.style("ERROR : WRONG SELECTION\n", fg="yellow"))
         main_menu(symbols)
@@ -78,4 +77,4 @@ def save_object(obj):
 
 from menus.manipulatemenu import manipulate_menu
 from menus.pcapdisplaymenu import pcap_exchange_menu
-from exporter.wiresharkdissector import wireshark_exporter_menu
+from menus.exportermenu import exporter_menu

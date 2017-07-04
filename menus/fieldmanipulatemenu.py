@@ -9,6 +9,7 @@ from menus.splitmenu import split_menu
 from menus.encodingmenu import encoding_menu
 from utilitaries import symbolselector
 from utilitaries.window import tkinter_window
+from utilitaries.availablefielddisplayer import display_available_fields
 
 def field_manipulate_menu(symbols, symbol_selector):
     if symbol_selector == "*":
@@ -17,27 +18,13 @@ def field_manipulate_menu(symbols, symbol_selector):
     click.echo(click.style(symbol_selector, fg="red") + click.style(" selected!\n", fg="blue"))
     click.echo(click.style("[Symbol description]", fg="green") + click.style(":", fg="blue") + click.style(
         symbol.description + "\n", fg="magenta"))
-    click.echo(click.style("Available fields:\n", fg="blue"))
-    if len(symbol.fields) > 1:
-        field_list = []
-        for field in symbol.fields:
-            field_list.append(field.name)
-        click.echo(click.style(str(field_list)+ '\n',fg="red"))
-        print("\n")
-        field_selector = input(" PLEASE SELECT A FIELD >>>   ")
-        print("\n")
-        if field_selector != "*":
-            field = symbolselector.selectsymbol(symbol.fields, field_selector)
-    else:
-        if symbol.fields[0].name ==  None :
-            click.echo(click.style("Field-0" + "\n", fg = "red"))
-            field_selector = "Field-0"
-        else:
-            click.echo(click.style(symbol.fields[0].name + "\n", fg="red"))
-            field_selector = symbol.fields[0].name
-        field = symbol.fields[0]
+    child = False
+    field, field_selector,child = display_available_fields(symbol.fields)
     click.echo(click.style(field_selector,fg = "red") + click.style(" selected!\n", fg = "blue"))
-    print_menu_choices(symbols,symbol_selector,field_selector,field,symbol.fields)
+    if child:
+        print_menu_choices(symbols, symbol_selector, field_selector, field, field.parent.fields)
+    else:
+        print_menu_choices(symbols,symbol_selector,field_selector,field,symbol.fields)
 
 def field_manipulate_menu_wildcard_symbol(symbols,symbol_selector):
     click.echo(click.style("ALL SYMBOLS SELECTED\n", fg="yellow"))
@@ -95,7 +82,7 @@ def field_manipulate_menu_choice(selector,field_selector,fields,symbols,symbol_s
                 field_merger(fields,field_selector,symbols,symbol_selector)
             elif (selector == "5"):
                 click.echo(click.style("ENCODING MENU\n", fg="yellow"))
-                encoding_menu(fields, field_selector)
+                encoding_menu(fields, field_selector,symbols)
             elif (selector == "6"):
                 click.echo(click.style("FIELD SPLIT MENU\n", fg="yellow"))
                 split_menu(field_selector,fields,parent=symbols)
@@ -112,7 +99,7 @@ def field_manipulate_menu_choice(selector,field_selector,fields,symbols,symbol_s
                 display_field(fields, field_selector, symbols, symbol_selector)
             elif (selector == "2"):
                 click.echo(click.style("ENCODING MENU\n", fg="yellow"))
-                encoding_menu(fields, field_selector)
+                encoding_menu(fields, field_selector,symbols)
             elif (selector == "B"):
                 click.echo(click.style("BACK TO MANIPULATE MENU\n", fg= "yellow"))
                 manipulate_menu(symbols)
@@ -128,7 +115,7 @@ def field_manipulate_menu_choice(selector,field_selector,fields,symbols,symbol_s
             edit_field_description(fields, field_selector, symbols, symbol_selector)
         elif (selector == "3"):
             click.echo(click.style("ENCODING MENU\n", fg="yellow"))
-            encoding_menu(fields, field_selector)
+            encoding_menu(fields, field_selector,symbols)
         elif (selector == "4"):
             click.echo(click.style("FIELD SPLIT MENU\n", fg="yellow"))
             split_menu(symbol_selector,symbols,field_selector)

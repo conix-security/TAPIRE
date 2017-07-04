@@ -21,8 +21,9 @@ def crcSeeker_menu_choice(seeker_selector,symbols,symbol_selector):
     if (seeker_selector == "1"):
         not_work = True
         #Sometimes clustering fails so we apply this quick workaround untill it succeeds
+        new_symbols = clusterize_by_CRC(symbol)
         while not_work:
-            new_symbols = clusterize_by_CRC(symbol)
+            #new_symbols = clusterize_by_CRC(symbol)
             for sym in new_symbols:
                 if sym.name.find("No_CRC") == -1:
                     try:
