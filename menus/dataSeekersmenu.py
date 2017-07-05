@@ -35,7 +35,7 @@ def dataSeeker_menu_choice(seeker_selector,symbols,symbol_selector):
     elif (seeker_selector == "5"):
         click.echo(click.style("SEARCH FOR SIZE\n", fg="yellow"))
         sizeSeeker_menu(symbol_selector,symbols)
-    elif (seeker_selector == "7"):
+    elif (seeker_selector == "6"):
         click.echo(click.style("RUN HASH IDENTIFYER\n", fg="yellow"))
         identifyHash(symbol_selector,symbols)
     elif (seeker_selector == "B"):

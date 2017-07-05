@@ -1,6 +1,8 @@
 import io
-
+import hexdump
 import click
+
+
 from netzob.all import *
 from scapy.all import *
 from collections import OrderedDict
@@ -42,19 +44,42 @@ def pcap_exchange_menu_choice(selector,symbols):
 
 def display_raw_pcap(symbols):
 
-    pcap_list = []
-    for PCAPFile in utilitaries.globalvars.PCAPFiles:
-        pcap_list.append(rdpcap(PCAPFile))
-    tempstdout_list = []
-    for i, pcap in enumerate(pcap_list):
+
+    if utilitaries.globalvars.NETWORK :
+        pcap_list = []
+        for PCAPFile in utilitaries.globalvars.PCAPFiles:
+            pcap_list.append(rdpcap(PCAPFile))
+        tempstdout_list = []
+        for i, pcap in enumerate(pcap_list):
+            old_stdout = sys.stdout
+            tempstdout_list.append(io.StringIO())
+            sys.stdout = tempstdout_list[i]
+            pcap.hexdump()
+            sys.stdout = old_stdout
+        buffer = ""
+        for i, tempstdout in enumerate(tempstdout_list):
+            buffer += "<----------------------------------------PCAP " + str(
+                i) + " :-------------------------------------->\n" + tempstdout.getvalue() + "\n"
+
+    else:
         old_stdout = sys.stdout
-        tempstdout_list.append(io.StringIO())
-        sys.stdout = tempstdout_list[i]
-        pcap.hexdump()
-        sys.stdout = old_stdout
-    buffer = ""
-    for i, tempstdout in enumerate(tempstdout_list):
-        buffer += "<----------------------------------------PCAP "+ str(i)+" :-------------------------------------->\n" + tempstdout.getvalue() + "\n"
+        tempstdout = []
+        i = 0
+        for PCAPFile in utilitaries.globalvars.PCAPFiles:
+            tempstdout.append(io.StringIO())
+            sys.stdout = tempstdout[i]
+            file = open(PCAPFile, 'rb')
+            file_buffer = b''
+            for line in file:
+                file_buffer+=line
+            file.close()
+            hexdump(file_buffer)
+            sys.stdout = old_stdout
+            i += 1
+        buffer = ""
+        for i, out in enumerate(tempstdout):
+            buffer += "<----------------------------------------FILE " + str(
+                i) + " :-------------------------------------->\n" + out.getvalue() + "\n"
     # Print buffer in a pager
     click.echo_via_pager(buffer)
     # Print buffer in tkinter window
@@ -64,8 +89,12 @@ def display_raw_pcap(symbols):
 def display_utf8_pcap(symbols):
 
     pcap_list = []
-    for PCAPFile in utilitaries.globalvars.PCAPFiles:
-        pcap_list.append(PCAPImporter.readFile(PCAPFile).values())
+    if utilitaries.globalvars.NETWORK:
+        for PCAPFile in utilitaries.globalvars.PCAPFiles:
+            pcap_list.append(PCAPImporter.readFile(PCAPFile).values())
+    else:
+        for PCAPFile in utilitaries.globalvars.PCAPFiles:
+            pcap_list.append(FileImporter.readFile(PCAPFile).values())
     tempstdout_list = []
     for i, pcap in enumerate(pcap_list):
         old_stdout = sys.stdout

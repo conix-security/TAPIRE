@@ -22,16 +22,21 @@ def get_args():
     group1 = parser.add_mutually_exclusive_group(required=True)
     group2 = parser.add_mutually_exclusive_group()
     group3 = parser.add_mutually_exclusive_group()
+    group4 = parser.add_mutually_exclusive_group()
     group1.add_argument("-a", "-analyse", help="Analyses the provided pcaps (minimum 2)", nargs='+',default=None)
     group1.add_argument("-l","-load", help="Loads the provided project")
-    group2.add_argument("-g","--gui", help="Activates GUI display", action="store_true", default=False)
-    group3.add_argument("-v", "--verbose", help="Activates logging messages (Critical, Error, Warning, Info, Debug)", choices=['C','E','W','I','D'])
+    group2.add_argument("-n","--network", help="Network mode for pcap(ng) analysis", action="store_true", default=False)
+    group3.add_argument("-g","--gui", help="Activates GUI display", action="store_true", default=False)
+    group4.add_argument("-v", "--verbose", help="Activates logging messages (Critical, Error, Warning, Info, Debug)", choices=['C','E','W','I','D'])
     parser.add_argument('--version', action='version', version='%(prog)s Version 0.5')
     args = parser.parse_args()
 
     #SET GUI
     if args.gui:
         utilitaries.globalvars.GUI = args.gui
+    #SET NETWORKING
+    if args.network:
+        utilitaries.globalvars.NETWORK = args.network
     if args.verbose is not None:
         if args.verbose == "D":
             logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)

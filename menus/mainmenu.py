@@ -14,9 +14,14 @@ def main_menu(symbols=None,args=None):
             utilitaries.globalvars.PCAPFiles = symbol_dict['messages']
     elif symbols is None and args.a is not None :
             messages = []
-            for argument in args.a:
-                messages += PCAPImporter.readFile(argument).values()
-                utilitaries.globalvars.PCAPFiles += [argument]
+            if utilitaries.globalvars.NETWORK:
+                for argument in args.a:
+                    messages += PCAPImporter.readFile(argument).values()
+                    utilitaries.globalvars.PCAPFiles += [argument]
+            else:
+                for argument in args.a:
+                    messages += FileImporter.readFile(argument,delimitor=b'').values()
+                    utilitaries.globalvars.PCAPFiles += [argument]
             symbols = [Symbol(name='symbol_0',messages=messages)]
     click.echo(click.style(
                """" \n\n\n

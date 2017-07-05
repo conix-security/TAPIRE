@@ -76,7 +76,7 @@ def split_delimiter(symbols,  symbol_selector,field_selector):
     if delimiter_Type == "1":
         delimiter_Type = "ASCII"
     elif delimiter_Type == "2":
-        delimiter_Type = "RAW"
+        delimiter_Type = "Raw"
     elif delimiter_Type == "3":
         delimiter_Type = "Hexadecimal"
     elif delimiter_Type == "4":
