@@ -11,8 +11,8 @@ def dataSeeker_menu(symbol_selector,symbols):
     click.echo(click.style("[3] ", fg = "green") + click.style("[Seek for CRC32 relation]", fg = "blue") + '\n')
     click.echo(click.style("[4] ", fg = "green") + click.style("[Separate header fields and data fields]", fg = "blue") + '\n')
     click.echo(click.style("[5] ", fg="green") + click.style("[Seek a size relation between two fields]", fg="blue") + '\n')
-    print('\033[92m' + " [6]  " + '\033[0m' + '\033[94m' + "[Run through hash identifyer]" + '\033[0m' + '\n')
-    print('\033[92m' + " [B]  " + '\033[0m' + '\033[94m' + "[Go back to previous menu]" + '\033[0m' + '\n')
+    print('\033[32m' + "[6]  " + '\033[0m' + '\033[34m' + "[Run through hash identifyer]" + '\033[0m' + '\n')
+    print('\033[32m' + "[B]  " + '\033[0m' + '\033[34m' + "[Go back to previous menu]" + '\033[0m' + '\n')
 
 
     seeker_selector = input(" PLEASE SELECT A CHOICE >>>   ")

@@ -91,7 +91,7 @@ def split_delimiter(symbols,  symbol_selector,field_selector):
         click.echo(click.style("[ERROR] ", fg="red") + click.style("Wrong selection",
                                                                    fg="blue") + '\n')
         split_menu(symbol_selector,symbols)
-    delimiter_string = input("Please specify a delimiter >>> ")
+    delimiter_string = input("Please specify a delimiter (For Raw, delimiter should look like so : \"\\\\xca\\\\xfe\\\\xba\\\\xbe\" ) \n >>> ")
     if delimiter_Type == "ASCII":
         delimiter = ASCII(delimiter_string)
     elif delimiter_Type == "Raw":
