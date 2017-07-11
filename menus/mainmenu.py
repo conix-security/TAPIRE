@@ -42,6 +42,7 @@ def main_menu(symbols=None,args=None):
     click.echo(click.style("[4]", fg = "green")+ click.style(": Open IPython shell\n",fg = "blue"))
     click.echo(click.style("[5]", fg="green") + click.style(": Export project parser\n", fg="blue"))
     click.echo(click.style("[6]", fg="green") + click.style(": Dynamic analysis\n", fg="blue"))
+    click.echo(click.style("[E]", fg="green") + click.style(": Exit and close Tapire\n", fg="blue"))
     selector = input(" PLEASE INPUT SELECTION >>>  ")
     main_menu_choice(selector,symbols)
 
@@ -66,6 +67,9 @@ def main_menu_choice(selector,symbols):
     elif (selector == "6"):
         click.echo(click.style("Dynamic Analysis MENU", fg="yellow"))
         dynamic_sequence_menu(symbols)
+    elif (selector == "E"):
+        click.echo(click.style("Bye! Thanks for using TAPIRE, feedback welcome! :)", fg="yellow"))
+        exit()
     else:
         click.echo(click.style("ERROR : WRONG SELECTION\n", fg="yellow"))
         main_menu(symbols)

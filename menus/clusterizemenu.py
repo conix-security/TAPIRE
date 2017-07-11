@@ -32,6 +32,7 @@ def clusterize_menu_choice(selector,symbols,symbol_selector):
         clusterize_by_alignment(symbols,symbol_selector)
     elif (selector == "3"):
         click.echo(click.style("CLUSTER BY APPLICATIVE DATA\n", fg="yellow"))
+        #clusterize_by_applicative(symbols,symbol_selector)
     elif (selector == "4" and symbol_selector != "*"):
         click.echo(click.style("CLUSTER BY CRC32\n", fg="yellow"))
         clusterize_by_CRC(symbols, symbol_selector)
@@ -43,6 +44,24 @@ def clusterize_menu_choice(selector,symbols,symbol_selector):
     else:
         click.echo(click.style("ERROR : WRONG SELECTION\n", fg="yellow"))
         clusterize_menu(symbols, symbol_selector)
+
+# def clusterize_by_applicative(symbols, symbol_selector):
+#     if symbol_selector == "*":
+#         messages = []
+#         for symbol in symbols:
+#             messages += symbol.messages.list
+#     else:
+#         symbol = symbolselector.selectsymbol(symbols, symbol_selector)
+#         messages = symbol.messages.list
+#     new_symbols = Format.clusterByApplicativeData(messages,appDatas)
+#     if not isinstance(new_symbols,list):
+#         new_symbols = [new_symbols ]
+#     if new_symbols[0].name == "Symbol":
+#         index=0
+#         for sym in new_symbols:
+#             sym.name = "Symbol-" + str(index)
+#             index += 1
+#     manipulate_menu(new_symbols)
 
 def clusterize_by_size(symbols,symbol_selector):
     if symbol_selector == "*":

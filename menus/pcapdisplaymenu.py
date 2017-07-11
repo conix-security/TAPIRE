@@ -1,7 +1,7 @@
 import io
 import hexdump
 import click
-
+import copy
 
 from netzob.all import *
 from scapy.all import *
@@ -155,7 +155,7 @@ def display_symbols_only(symbols):
     for sym in symbols:
         for message in sym.messages:
             sessions.append(message.session)
-    sessions = set(sessions)
+    sessions = set(copy.deepcopy(sessions))
     for session in sessions:
         print("\033[1;31m" + " " + session.name + " " + '\033[0m')
         session_abstract = session.abstract(symbols)
