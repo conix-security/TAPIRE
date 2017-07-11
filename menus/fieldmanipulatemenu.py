@@ -9,7 +9,8 @@ from menus.splitmenu import split_menu
 from menus.encodingmenu import encoding_menu
 from utilitaries import symbolselector
 from utilitaries.window import tkinter_window
-from utilitaries.availablefielddisplayer import display_available_fields
+from utilitaries.availablefielddisplayer import *
+from utilitaries.nameUnique import make_unique_names
 
 def field_manipulate_menu(symbols, symbol_selector):
     if symbol_selector == "*":
@@ -18,7 +19,7 @@ def field_manipulate_menu(symbols, symbol_selector):
     click.echo(click.style(symbol_selector, fg="red") + click.style(" selected!\n", fg="blue"))
     click.echo(click.style("[Symbol description]", fg="green") + click.style(":", fg="blue") + click.style(
         symbol.description + "\n", fg="magenta"))
-    child = False
+    make_unique_names(symbol.fields)
     field, field_selector,child = display_available_fields(symbol.fields)
     click.echo(click.style(field_selector,fg = "red") + click.style(" selected!\n", fg = "blue"))
     if child:
@@ -176,13 +177,14 @@ def edit_field_description(fields,field_selector,symbols,symbol_selector):
     field_manipulate_menu(symbols, symbol_selector)
 
 def field_merger(fields,field_selector,symbols,symbol_selector):
-    field_merge_1 = symbolselector.selectsymbol(fields, field_selector)
+    field1 = symbolselector.selectsymbol(fields, field_selector)
     print("\n")
     click.echo(click.style(field_selector, fg="red") + click.style(" selected!\n", fg="blue"))
     print("\n")
+    display_available_fields_only(fields,ommit= field1)
     field_merge_2 = input("PLEASE SELECT SECOND FIELD TO MERGE WITH >>> ")
     print("\n")
-    field1 = symbolselector.selectsymbol(fields, field_merge_1)
+    #field1 = symbolselector.selectsymbol(fields, field_merge_1.name)
     field2 = symbolselector.selectsymbol(fields, field_merge_2)
     field_name = field1.name
     Format.mergeFields(field1,field2)

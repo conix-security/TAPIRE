@@ -136,7 +136,10 @@ def display_messages_with_fields(symbols):
             for i,element in enumerate(splitMessageList[message]):
                 print(" | ", end = " ")
                 if i <= 2:
-                    print('\033[92m' + " " + element + " " + '\033[0m',end = " ")
+                    if element is not None:
+                        print('\033[92m' + " " + element + " " + '\033[0m',end = " ")
+                    else:
+                        pass
                 else:
                     print(element, end = " ")
             print("\n")

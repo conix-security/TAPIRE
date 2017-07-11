@@ -9,10 +9,11 @@ from utilitaries.availablesymboldisplayer import display_available_symbols
 from menus.mainmenu import main_menu
 from utilitaries import symbolselector
 from utilitaries.window import tkinter_window
+from utilitaries.nameUnique import make_unique_names
 
 
 def manipulate_menu(symbols):
-
+    make_unique_names(symbols)
     symbol,symbol_selector = display_available_symbols(symbols)
     click.echo(click.style(symbol_selector,fg = "red") + click.style(" selected!\n", fg = "blue"))
     if symbol_selector != "*":

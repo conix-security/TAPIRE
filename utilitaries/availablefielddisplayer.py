@@ -43,3 +43,25 @@ def display_available_fields(fields):
         else:
             recurse = False
     return field, field_selector,child
+
+
+def display_available_fields_only(fields, ommit = None):
+
+    child = False
+    recurse = True
+    while recurse:
+        names = []
+        for field in fields:
+            names.append(field.name)
+        click.echo(click.style("Available fields:\n", fg="blue"))
+        if len(fields) > 1:
+            field_list = []
+            for field in fields:
+                if ommit is not None:
+                    if field.name != ommit.name:
+                        field_list.append(field.name)
+                else:
+                    field_list.append(field.name)
+            click.echo(click.style(str(field_list)+ '\n',fg="red"))
+            print("\n")
+            break
