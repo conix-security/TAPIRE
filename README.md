@@ -46,6 +46,7 @@ The main mantainer of the project is warsang. Please contact him at theodore.rie
 
 ## TODO:
 
+* Check for error in RelationFinder
 * Value search
 * Split fields by index
 * Header separation based on field name
