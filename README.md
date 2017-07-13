@@ -46,10 +46,14 @@ The main mantainer of the project is warsang. Please contact him at theodore.rie
 
 ## TODO:
 
+* Value search
+* Split fields by index
+* Header separation based on field name
 * Code reformating
 * ClusterizebyApplicativeData
 * Helpstrings
-* Dynamic analysis (automaton generation, fuzzing, live capture and live display of new fields)
+* Dynamic analysis (automaton generation, fuzzing, live capture and live display of new fields improvement)
+* Interface with REWARDS pintool to get type and semantic inference
 * HelpStrings
 * Dockerfile
 * Display messages in different encodings (cyrilic, utf-16 etc.)
@@ -171,7 +175,52 @@ Now that we have our fields define, we can export the parser to a wireshark diss
 
 We can also use TAPIRE to reverse engineer an unknown file format.
 
-In this example we are going to make use of two simple gif files.
+In this example we are going to make use of three simple gif files. When Reverse engineering a file with Tapire, try to use small files as you might have an important overhead with larger files.
+
+This time we will run tapire without the "-n" option:
+
+    ./tapire.py -a ../demo_tapire/gif_files/ajax-loader.gif ../demo_tapire/gif_files/loading_icon.gif ../demo_tapire/gif_files/texasflag.gif -g
+    
+However, I am using the "-g" (gui) option as file inference usually results with very long strings of bytes hard to look at on a terminal.
+
+In the manipulate menu, I chose to start by splitting the buffers using the split aligned method.
+I chose this method as there would probably be very similare fields in the files but they might not be at the same position. Hence, this would allow to align these similar fields.
+Then I displayed the symbol to visualize the result. The result is long to load as unfortunately, netzob and netgoblin are not multi-threaded...
+The first few fields: Session, Source and Destination are from the networking mode and have not yet been disabled in TAPIRE for non networking mode. They show the Session (file source) as well as the source (same value as the Session) and a destination field of "None".
+
+![Result](https://image.ibb.co/cRYT7v/Selection_015.png)
+
+The first few fields are the ones we are interested in as the rest is probably just raw data for the file format.
+
+![After a bit of formatting](https://i.imgur.com/tA7MFXU.png)
+
+I renamed the fields according to the GIF structure exposed in [kaitai Web IDE](https://ide.kaitai.io/)
+
+The first Field contains the file Magic string. A unique string which identifies the file format. This string here is "\x47\x49\x46" which is hex for "GIF". The following value 89a is the GIF version.
+The next two fields are Screen width and height. Then comes a flag which is the color table flag.
+In the "ajax loader" gif image, this flag is 0XF2 which is "ò" in ASCII. This flag gives us several informations on the gif file:
+
+To check if the file has a color table we check :
+     
+    flags & 0b10000000 != 0
+
+Here:
+
+    0xF2 & 0x80 = 0x80
+If the value is not null we have a color table.
+The size of the color table is given by:
+
+    2 << (flags & 7)
+
+Here:
+    
+    2 << (0XF2 & 7) = 8
+
+The next value in this field is the BG color index. "\x04" for the second file.
+
+Finally the following field "Field01502691-24e6-44ba-bd40-fac61efbcf09" is the pixel ratio. Appart from this, we also notice that it is a separator field between the data and header part of the file. TAPIRE has several methods to separate header fields from data fields. However, I have not yet implemented separating header and data by using a specific field name.
+
+
 
 
 
