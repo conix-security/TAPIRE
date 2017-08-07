@@ -165,8 +165,28 @@ We can select the Clusterize menu "2" to do so. Several clusterize options are a
 
 Please note that the wildcard selector "*" is supported in some menus in TAPIRE. However not all options are available for the wild card selector, most of the time because they induce an important overhead!
 
-For some obscure reason, the relation finder in Netgoblin is no longer working with this example (it used to work fine). I will update this walkthrough when it's back to normal!
+We can now try to detect relations between fields. There are two types of relation finders in TAPIRE:
+- The ones that work with wildcard "*" selector
+- The ones that work without it. Netzob is not multithreaded. Neither is Netgoblin. Hence some relation finders cause a very large overhead. It was decided in Tapire that the slower ones would not work with the "*" attribute. Detecting a relation is usually fast. The longer process is automated field creation. You might want to create fields manually (using the IPython console) after detection in order to reduce overhead.
 
+To run the basic Relation Finder implemented in Netzob, once inside the manipulate menu, select alls symbols and go to the simple relation finder menu "R" and select "Relation Finder" -> "2"
+You should then get the following result:
+
+![Relation finder results](https://ibb.co/jdrHba)
+
+TAPIRE does not automate field creation through the basic Relation finder (yet) so you will need to script it. The netzob tutorial explains how to do so in a simple manner:
+
+    for symbol in symbols.values():
+    rels = RelationFinder.findOnSymbol(symbol)
+
+    for rel in rels:
+
+        # Apply first found relationship
+        rel = rels[0]
+        rel["x_fields"][0].domain = Size(rel["y_fields"], factor=1/8.0)
+
+    print("[+] Symbol structure:")
+    print(symbol._str_debug())
 
 Now that we have our fields define, we can export the parser to a wireshark dissector and visualize the pcap with netzob infered fields directly in wireshark. To run wireshark with our lua dissector, we use:
 

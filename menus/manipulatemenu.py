@@ -2,14 +2,13 @@ import io
 import sys
 
 import click
-
 from netzob.all import *
 
-from utilitaries.availablesymboldisplayer import display_available_symbols
 from menus.mainmenu import main_menu
 from utilitaries import symbolselector
-from utilitaries.window import tkinter_window
+from utilitaries.availablesymboldisplayer import display_available_symbols
 from utilitaries.nameUnique import make_unique_names
+from utilitaries.window import tkinter_window
 
 
 def manipulate_menu(symbols):
@@ -25,10 +24,10 @@ def manipulate_menu(symbols):
         click.echo(click.style("[4]", fg="green") + click.style(": Rename symbol\n", fg="blue"))
         click.echo(click.style("[5]", fg="green") + click.style(": Edit symbol description\n", fg="blue"))
         click.echo(click.style("[6]", fg="green") + click.style(": Generate packet according to symbol", fg="blue") +click.style("[WARNING]: STRESSFUL\n", fg="yellow"))
-        click.echo(click.style("[7]", fg="green") + click.style(": Manipulate Fields\n", fg="blue"))
+        click.echo(click.style("[7]", fg="green") + click.style(": Manipulate fields\n", fg="blue"))
         click.echo(click.style("[8]", fg="green") + click.style(": Encode symbol\n", fg="blue"))
-        click.echo(click.style("[9]", fg="green") + click.style(": Search for data relations (CRC, IP etc.)\n", fg="blue"))
-        click.echo(click.style("[R]", fg="green") + click.style(": RelationFinder", fg="blue") + click.style(" [WARNING]: LONG PROCESS...\n", fg="yellow"))
+        click.echo(click.style("[9]", fg="green") + click.style(": Complex relation finder (CRC, IP etc.)\n", fg="blue"))
+        click.echo(click.style("[R]", fg="green") + click.style(": Simple relation finder", fg="blue") + click.style(" [WARNING]: LONG PROCESS...\n", fg="yellow"))
         click.echo(click.style("[M]", fg="green") + click.style(": Merge two symbols", fg="blue") + click.style(" [WARNING]: Changes Fields\n", fg="yellow"))
         click.echo(click.style("[D]", fg="green") + click.style(": Delete useless symbols", fg="blue") + "\n")
         click.echo(click.style("[B]", fg="green") + click.style(": Back to main menu\n", fg="blue"))
@@ -39,7 +38,7 @@ def manipulate_menu(symbols):
         click.echo(click.style("[3]", fg="green") + click.style(": Split\n", fg="blue"))
         click.echo(click.style("[4]", fg="green") + click.style(": Encode symbols\n", fg="blue"))
         click.echo(click.style("[5]", fg="green") + click.style(": Manipulate fields\n", fg="blue"))
-        click.echo(click.style("[R]", fg="green") + click.style(": RelationFinder", fg="blue") + click.style(" [WARNING]: LONG PROCESS...\n", fg="yellow"))
+        click.echo(click.style("[R]", fg="green") + click.style(": Simple relation finder", fg="blue") + click.style(" [WARNING]: LONG PROCESS...\n", fg="yellow"))
         click.echo(click.style("[M]", fg="green") + click.style(": Merge two symbols", fg="blue") + click.style(" [WARNING]: Changes Fields\n", fg="yellow"))
         click.echo(click.style("[D]", fg="green") + click.style(": Delete useless symbols", fg="blue") + "\n")
         click.echo(click.style("[B]", fg="green") + click.style(": Back to main menu\n", fg="blue"))
@@ -70,8 +69,8 @@ def manipulate_menu_choice(selector,symbol_selector,symbols):
             click.echo(click.style("MERGE SYMBOLS\n", fg="yellow"))
             merge_symbols(symbols)
         elif(selector == "R"):
-            click.echo(click.style("RELATION FINDER\n", fg="yellow"))
-            relationfinder_menu(symbol_selector,symbols)
+            click.echo(click.style("SIMPLE RELATION FINDER\n", fg="yellow"))
+            simpleSeeker_menu(symbol_selector,symbols)
         elif (selector == "D"):
             click.echo(click.style("DELETE USELESS SYMBOLS\n", fg="yellow"))
             delete_useless_symbols(symbols)
@@ -107,11 +106,11 @@ def manipulate_menu_choice(selector,symbol_selector,symbols):
             click.echo(click.style("ENCODING MENU\n", fg="yellow"))
             encoding_menu(symbols, symbol_selector)
         elif (selector == "9"):
-            click.echo(click.style("SEARCH FOR DATA RELATIONS\n", fg="yellow"))
-            dataSeeker_menu(symbol_selector,symbols)
+            click.echo(click.style("SEARCH FOR COMPLEX DATA RELATIONS\n", fg="yellow"))
+            complexSeeker_menu(symbol_selector,symbols)
         elif(selector == "R"):
-            click.echo(click.style("RELATION FINDER\n", fg="yellow"))
-            relationfinder_menu(symbol_selector,symbols)
+            click.echo(click.style("SIMPLE RELATION FINDER\n", fg="yellow"))
+            simpleSeeker_menu(symbol_selector,symbols)
         elif (selector == "M"):
             click.echo(click.style("MERGE SYMBOLS\n", fg="yellow"))
             merge_symbols(symbols)
@@ -239,5 +238,5 @@ from menus.clusterizemenu import clusterize_menu
 from menus.splitmenu import split_menu
 from menus.fieldmanipulatemenu import field_manipulate_menu
 from menus.encodingmenu import encoding_menu
-from seekers.Relation_finder import relationfinder_menu
-from menus.dataSeekersmenu import dataSeeker_menu
+from menus.simpleSeekersmenu import simpleSeeker_menu
+from menus.complexSeekersmenu import  complexSeeker_menu
