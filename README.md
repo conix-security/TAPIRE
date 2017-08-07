@@ -188,6 +188,13 @@ TAPIRE does not automate field creation through the basic Relation finder (yet) 
     print("[+] Symbol structure:")
     print(symbol._str_debug())
 
+However, if the field relation is a Size Relation, you might want to try using the netgoblin complex Size relation which includes automated field creation.
+To do so, select the symbol in the manipulate menu in which you want to create the relation, then select "9" and "4" to go to the size relation seeker. It will ask you if you wish to create fields and will ask you for a base search index. Here we could point it after the first text field as we know that it is not our Size field.
+
+The following shows the automated Size field creation:
+
+[![Size Relation Finder and field creation](https://asciinema.org/a/WfML0rMJNS30s4FTEQaU5g7op.png)](https://asciinema.org/a/WfML0rMJNS30s4FTEQaU5g7op)
+
 Now that we have our fields define, we can export the parser to a wireshark dissector and visualize the pcap with netzob infered fields directly in wireshark. To run wireshark with our lua dissector, we use:
 
     wireshark -X lua_script:<my_script.lua>
