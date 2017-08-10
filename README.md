@@ -1,3 +1,6 @@
+# WARNING:
+
+This tool saves objects through serialization using the python pickle module. This is unsafe as it can cause code execution. A POC called exploit.py generates such a file (which runs ls and also opens a reverse shell to 127.0.0.1 3333). I wanted to allow a Reverse engineer to be able to save his work. This means do not load any project you have received from an untrusted source, ever! Only open TAPIRE projects from trusted sources. I am thinking on a way around this, but have not implemented one yet. Suggestions are welcome.
 
 # TAPIRE: Tool for Assisting Protocol Inference and Reverse Engineering
 
