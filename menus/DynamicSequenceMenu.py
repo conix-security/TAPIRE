@@ -4,8 +4,8 @@ from netzob.all import *
 
 from menus.mainmenu import main_menu
 
-from utilitaries import symbolselector
-from utilitaries import converter
+from utilities import symbolselector
+from utilities import converter
 
 def dynamic_sequence_menu(symbols):
 

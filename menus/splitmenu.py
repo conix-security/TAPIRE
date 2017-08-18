@@ -3,7 +3,7 @@ from netzob.Common.Utils.TypedList import TypedList
 from netzob.all import *
 
 from menus.manipulatemenu import manipulate_menu
-from utilitaries import symbolselector, converter
+from utilities import symbolselector, converter
 
 
 def split_menu(symbol_selector, symbols,field_selector = None,parent = None):

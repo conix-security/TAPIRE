@@ -5,7 +5,7 @@ import click
 from netzob.all import *
 
 from menus.manipulatemenu import manipulate_menu
-from utilitaries import symbolselector
+from utilities import symbolselector
 
 
 def relationfinder_menu(symbol_selector,symbols):

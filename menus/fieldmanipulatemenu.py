@@ -7,10 +7,10 @@ from netzob.all import *
 from menus.manipulatemenu import manipulate_menu
 from menus.splitmenu import split_menu
 from menus.encodingmenu import encoding_menu
-from utilitaries import symbolselector
-from utilitaries.window import tkinter_window
-from utilitaries.availablefielddisplayer import *
-from utilitaries.nameUnique import make_unique_names
+from utilities import symbolselector
+from utilities.window import tkinter_window
+from utilities.availablefielddisplayer import *
+from utilities.nameUnique import make_unique_names
 
 def field_manipulate_menu(symbols, symbol_selector):
     if symbol_selector == "*":

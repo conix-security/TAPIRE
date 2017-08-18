@@ -2,7 +2,7 @@ import click
 from netzob.all import *
 
 from menus.manipulatemenu import manipulate_menu
-from utilitaries import symbolselector, replace_symbols
+from utilities import symbolselector, replace_symbols
 
 
 #TODO Get Debug log output from Netgoblin CRCSEEKER

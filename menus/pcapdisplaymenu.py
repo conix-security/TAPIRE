@@ -7,9 +7,9 @@ from netzob.all import *
 from scapy.all import *
 from collections import OrderedDict
 
-import utilitaries.globalvars
+import utilities.globalvars
 from menus.mainmenu import main_menu
-from utilitaries.window import tkinter_window
+from utilities.window import tkinter_window
 
 def pcap_exchange_menu(symbols):
 
@@ -45,9 +45,9 @@ def pcap_exchange_menu_choice(selector,symbols):
 def display_raw_pcap(symbols):
 
 
-    if utilitaries.globalvars.NETWORK :
+    if utilities.globalvars.NETWORK :
         pcap_list = []
-        for PCAPFile in utilitaries.globalvars.PCAPFiles:
+        for PCAPFile in utilities.globalvars.PCAPFiles:
             pcap_list.append(rdpcap(PCAPFile))
         tempstdout_list = []
         for i, pcap in enumerate(pcap_list):
@@ -65,7 +65,7 @@ def display_raw_pcap(symbols):
         old_stdout = sys.stdout
         tempstdout = []
         i = 0
-        for PCAPFile in utilitaries.globalvars.PCAPFiles:
+        for PCAPFile in utilities.globalvars.PCAPFiles:
             tempstdout.append(io.StringIO())
             sys.stdout = tempstdout[i]
             file = open(PCAPFile, 'rb')
@@ -89,11 +89,11 @@ def display_raw_pcap(symbols):
 def display_utf8_pcap(symbols):
 
     pcap_list = []
-    if utilitaries.globalvars.NETWORK:
-        for PCAPFile in utilitaries.globalvars.PCAPFiles:
+    if utilities.globalvars.NETWORK:
+        for PCAPFile in utilities.globalvars.PCAPFiles:
             pcap_list.append(PCAPImporter.readFile(PCAPFile).values())
     else:
-        for PCAPFile in utilitaries.globalvars.PCAPFiles:
+        for PCAPFile in utilities.globalvars.PCAPFiles:
             pcap_list.append(FileImporter.readFile(PCAPFile).values())
     tempstdout_list = []
     for i, pcap in enumerate(pcap_list):

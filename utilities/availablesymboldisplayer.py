@@ -2,7 +2,7 @@ import click
 import sys
 import io
 
-from utilitaries import symbolselector
+from utilities import symbolselector
 
 def display_available_symbols(symbols):
     symbol = None

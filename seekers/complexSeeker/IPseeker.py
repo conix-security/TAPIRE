@@ -2,7 +2,7 @@ import click
 from netzob.all import *
 
 from menus.manipulatemenu import manipulate_menu
-from utilitaries import symbolselector
+from utilities import symbolselector
 
 
 #TODO Get Debug log output from Netgoblin IPSEEKER

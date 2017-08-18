@@ -3,7 +3,7 @@ import pickle
 import IPython
 import click
 from netzob.all import *
-import utilitaries.globalvars
+import utilities.globalvars
 
 def main_menu(symbols=None,args=None):
 
@@ -11,17 +11,17 @@ def main_menu(symbols=None,args=None):
         with open(args.l, 'rb') as file:
             symbol_dict = pickle.load(file)
             symbols = symbol_dict['Symbol']
-            utilitaries.globalvars.PCAPFiles = symbol_dict['messages']
+            utilities.globalvars.PCAPFiles = symbol_dict['messages']
     elif symbols is None and args.a is not None :
             messages = []
-            if utilitaries.globalvars.NETWORK:
+            if utilities.globalvars.NETWORK:
                 for argument in args.a:
                     messages += PCAPImporter.readFile(argument).values()
-                    utilitaries.globalvars.PCAPFiles += [argument]
+                    utilities.globalvars.PCAPFiles += [argument]
             else:
                 for argument in args.a:
                     messages += FileImporter.readFile(argument,delimitor=b'').values()
-                    utilitaries.globalvars.PCAPFiles += [argument]
+                    utilities.globalvars.PCAPFiles += [argument]
             symbols = [Symbol(name='symbol_0',messages=messages)]
     click.echo(click.style(
                """" \n\n\n
@@ -76,10 +76,10 @@ def main_menu_choice(selector,symbols):
 
 def save_object(obj):
     filename = input("PLEASE SELECT PROJECT NAME >>>")
-    if utilitaries.globalvars.PCAPFiles:
+    if utilities.globalvars.PCAPFiles:
         symbol_dict = {
             'Symbol': obj,
-            'messages': utilitaries.globalvars.PCAPFiles
+            'messages': utilities.globalvars.PCAPFiles
         }
     with open("./projects/"+filename, 'wb') as output:
         pickle.dump(symbol_dict, output, pickle.HIGHEST_PROTOCOL)

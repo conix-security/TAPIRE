@@ -3,7 +3,7 @@ from netzob.all import *
 from netzob.Common.Utils.TypedList import TypedList
 
 from menus.manipulatemenu import manipulate_menu
-from utilitaries import symbolselector
+from utilities import symbolselector
 
 
 def encoding_menu(symbols,symbol_selector,syms = None):

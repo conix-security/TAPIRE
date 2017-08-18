@@ -2,14 +2,14 @@ from tkinter import font
 from tkinter import *
 import _thread
 
-import utilitaries.globalvars
+import utilities.globalvars
 
 
 def tkinter_window(buffer):
     _thread.start_new_thread(tkinter_open_window, (buffer,1))
 
 def tkinter_open_window(buffer,*args):
-    if utilitaries.globalvars.GUI:
+    if utilities.globalvars.GUI:
         root = Tk()
         # Specify font
         my_font = font.Font(root=root, family='Courier', size=10)

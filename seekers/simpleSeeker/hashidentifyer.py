@@ -1,7 +1,7 @@
 from netzob.all import *
 
 from menus.manipulatemenu import manipulate_menu
-from utilitaries.all import *
+from utilities.all import *
 
 def identifyHash(symbol_selector,symbols):
     identifyer = HashIdentifyer()

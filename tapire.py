@@ -4,7 +4,7 @@ import sys
 import click
 import argparse
 
-import utilitaries.globalvars
+import utilities.globalvars
 from menus.mainmenu import main_menu
 
 
@@ -33,10 +33,10 @@ def get_args():
 
     #SET GUI
     if args.gui:
-        utilitaries.globalvars.GUI = args.gui
+        utilities.globalvars.GUI = args.gui
     #SET NETWORKING
     if args.network:
-        utilitaries.globalvars.NETWORK = args.network
+        utilities.globalvars.NETWORK = args.network
     if args.verbose is not None:
         if args.verbose == "D":
             logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)

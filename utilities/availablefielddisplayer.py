@@ -1,6 +1,6 @@
 import click
 
-from utilitaries import symbolselector
+from utilities import symbolselector
 
 def display_available_fields(fields):
 

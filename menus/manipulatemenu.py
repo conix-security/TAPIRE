@@ -5,10 +5,10 @@ import click
 from netzob.all import *
 
 from menus.mainmenu import main_menu
-from utilitaries import symbolselector
-from utilitaries.availablesymboldisplayer import display_available_symbols
-from utilitaries.nameUnique import make_unique_names
-from utilitaries.window import tkinter_window
+from utilities import symbolselector
+from utilities.availablesymboldisplayer import display_available_symbols
+from utilities.nameUnique import make_unique_names
+from utilities.window import tkinter_window
 
 
 def manipulate_menu(symbols):
