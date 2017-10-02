@@ -1,0 +1,4 @@
+click
+IPython
+hexdump
+scapy-python3
