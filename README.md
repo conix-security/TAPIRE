@@ -1,6 +1,6 @@
 # WARNING:
 
-This tool saves objects through serialization using the python pickle module. This is unsafe as it can cause code execution. A POC called exploit.py generates such a file (which runs ls and also opens a reverse shell to 127.0.0.1 3333). I wanted to allow a Reverse engineer to be able to save his work. This means do not load any project you have received from an untrusted source, ever! Only open TAPIRE projects from trusted sources. This is not really a vulnerability as the attack scenario is about the same as getting a user to run an untrusted PE on his computer. Nevertheless, users should be warned. I am thinking on a way to mitigate this, but have not implemented one yet. Suggestions are welcome.
+This tool saves objects through serialization using the python pickle module. This is unsafe as it can cause code execution. A POC called exploit.py generates such a file (which runs ls and also opens a reverse shell to 127.0.0.1 3333). As you would not run an untrusted executable on a windows machine, do not load any  TAPIRE project you have received from an untrusted source, ever! Only open TAPIRE projects from trusted sources. This is not really a vulnerability as the attack scenario is about the same as getting a user to run an untrusted PE on his computer. Nevertheless, users should be warned. I am thinking on a way to mitigate this, but have not implemented one yet. Suggestions are welcome.
 
 # TAPIRE: Tool for Assisting Protocol Inference and Reverse Engineering
 
@@ -11,7 +11,7 @@ The aim of the project is to make protocol reverse engineering easy and automate
 It does not aim to replace the reverser and should be considered as a help for reverse engineering, not a solution.
 Right now the tool supports TCP and UDP based protocol reverse engineering as well as unkown file format reverse engineering.
 
-The tool needs a modified version of [Netzob](https://github.com/netzob/netzob) ([netgoblin fork](https://github.com/warsang/netzob)) in order to make efficient use of all methods.
+The tool needs a modified version of [Netzob](https://github.com/netzob/netzob) ([netgoblin fork](https://github.com/conix-security/netgoblin)) in order to make efficient use of all methods.
 It is under continuous development and hence can be unstable when it comes to some features.
 
 This project began as a script. Hence, some parts of the code are not very pythonic (ex: circular imports etc.). I do intend to reformat (make it more Object oriented, get rid of circular imports, get rid of click etc.) the code but have not found the courage to do so yet.
@@ -45,9 +45,10 @@ The main mantainer of the project is warsang. Please contact him at theodore.rie
 * Documentation/Tutorial
 * EntropyFinder
 * File format reverse engineering
+* Dockerfile
 * And probably more...
 
-## TODO:
+### TODO:
 
 * Check for error in RelationFinder
 * Value search
@@ -62,6 +63,47 @@ The main mantainer of the project is warsang. Please contact him at theodore.rie
 * Dockerfile
 * Display messages in different encodings (cyrilic, utf-16 etc.)
 
+## INSTALL:
+
+TAPIRE can be installed by installing netgoblin first.
+To do so, run:
+
+    git clone https://github.com/conix-security/netgoblin
+
+If required, checkout to latest branch after cd in the netgoblin directory:
+
+    git checkout develop
+
+In the netgoblin/netzob directory run:
+
+    pip3 install -r requirements.txt
+
+For some reason, you might also have to install setuptools and minepy using pip3
+
+Finally run:
+
+     python3 setup.py install
+
+For TAPIRE:
+
+    git clone https://github.com/conix-security/TAPIRE
+    git checkout develop
+    pip3 install -r requirements.txt
+
+Otherwise you can also run the dockerfile from the TAPIRE directory using:
+
+    docker build dockerfile
+
+To list the newly created image run:
+
+    docker images
+
+And then run something like:
+    
+    docker run -it -p 3333:3333 -v /tmp/projects:/tmp/projects imageID
+
+The /tmp/projects will be a shared file.
+The 3333 port binding really depends on your needs.
 
 ## Tool usage:
 

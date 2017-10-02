@@ -21,8 +21,8 @@ ENV LANG en_US.UTF-8
 RUN git clone https://github.com/conix-security/netgoblin
 WORKDIR /home/netgoblin/netzob
 RUN git checkout develop
-RUN pip3 install setuptools
-RUN pip3 install minepy
+#RUN pip3 install setuptools
+#RUN pip3 install minepy
 RUN pip3 install -r requirements.txt
 RUN python3 setup.py install
 
