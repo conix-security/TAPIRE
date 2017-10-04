@@ -2,7 +2,7 @@ import click
 from netzob.all import *
 
 from menus.manipulatemenu import manipulate_menu
-from utilitaries import converter
+from utilities import converter
 
 
 #TODO Get Debug log output from Netgoblin headerSeeker

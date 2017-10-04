@@ -3,10 +3,10 @@ from netzob.Common.Utils.TypedList import TypedList
 from netzob.all import *
 
 from menus.manipulatemenu import manipulate_menu
-from utilitaries import symbolselector, converter
+from utilities import symbolselector, converter
 
 
-def split_menu(symbol_selector, symbols,field_selector = None):
+def split_menu(symbol_selector, symbols,field_selector = None,parent = None):
     click.echo(click.style("[1]", fg="green") + click.style(": Split static\n", fg="blue"))
     click.echo(click.style("[2]", fg="green") + click.style(": Split aligned\n", fg="blue"))
     click.echo(click.style("[3]", fg="green") + click.style(": Split delimiter\n", fg="blue"))
@@ -14,10 +14,10 @@ def split_menu(symbol_selector, symbols,field_selector = None):
     print("\n")
     selector = input("PLEASE SELECT A MENU CHOICE >>>  ")
     print("\n")
-    split_menu_choice(selector, symbol_selector, symbols,field_selector)
+    split_menu_choice(selector, symbol_selector, symbols,field_selector,parent)
 
 
-def split_menu_choice(selector, symbol_selector, symbols,field_selector):
+def split_menu_choice(selector, symbol_selector, symbols,field_selector,parent=None):
     if (selector == "1"):
         click.echo(click.style("SPLIT STATIC\n", fg="yellow"))
         split_static(symbols,  symbol_selector,field_selector)
@@ -28,10 +28,12 @@ def split_menu_choice(selector, symbol_selector, symbols,field_selector):
         click.echo(click.style("SPLIT DELIMITER\n", fg="yellow"))
         split_delimiter(symbols,symbol_selector,field_selector)
     elif (selector == "B"):
+        if parent is not None:
+            manipulate_menu(parent)
         manipulate_menu(symbols)
     else:
         click.echo(click.style("ERROR : WRONG SELECTION\n", fg="yellow"))
-        split_menu(symbol_selector, symbols)
+        split_menu(symbol_selector, symbols,parent)
     return
 
 def split_static(symbols,  symbol_selector,field_selector):
@@ -74,7 +76,7 @@ def split_delimiter(symbols,  symbol_selector,field_selector):
     if delimiter_Type == "1":
         delimiter_Type = "ASCII"
     elif delimiter_Type == "2":
-        delimiter_Type = "RAW"
+        delimiter_Type = "Raw"
     elif delimiter_Type == "3":
         delimiter_Type = "Hexadecimal"
     elif delimiter_Type == "4":
@@ -89,7 +91,7 @@ def split_delimiter(symbols,  symbol_selector,field_selector):
         click.echo(click.style("[ERROR] ", fg="red") + click.style("Wrong selection",
                                                                    fg="blue") + '\n')
         split_menu(symbol_selector,symbols)
-    delimiter_string = input("Please specify a delimiter >>> ")
+    delimiter_string = input("Please specify a delimiter (For Raw, delimiter should look like so : \"\\\\xca\\\\xfe\\\\xba\\\\xbe\" ) \n >>> ")
     if delimiter_Type == "ASCII":
         delimiter = ASCII(delimiter_string)
     elif delimiter_Type == "Raw":

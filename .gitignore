@@ -14,6 +14,7 @@ config.py
 #Other#
 __pycache__  
 pycrc-0.9
+projects
 
 #Graphical UI#
 dialog.ui
