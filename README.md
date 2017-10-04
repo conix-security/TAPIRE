@@ -92,7 +92,7 @@ For TAPIRE:
 
 Otherwise you can also run the dockerfile from the TAPIRE directory using:
 
-    docker build dockerfile
+    docker build dockerfile -t TAPIREc
 
 To list the newly created image run:
 
@@ -100,8 +100,9 @@ To list the newly created image run:
 
 And then run something like:
     
-    docker run -it -p 3333:3333 -v /tmp/projects:/tmp/projects imageID
+    docker run -it -p 3333:3333 -e DISPLAY=$DISPLAY -v /tmp/projects:/tmp/projects TAPIREc
 
+The -e option allows to use the TAPIRE tkinter GUI. However, I have not been able to make this work just yet. I will get down to it eventually.
 The /tmp/projects will be a shared file.
 The 3333 port binding really depends on your needs.
 
@@ -117,7 +118,7 @@ First and foremost you might want to check the options available when using the 
 
 Let's go over each option:
  
-- The "-n / --network" option:
+- The "-n / --network" option
 Tapire has two modes, a network mode and a non network mode specified by the -n option Network mode is taylored to analyze messages contained in pcaps. It also enables Tapire networking capabilities such as replaying a sequence of messages and (not yet implemented) will also allow live capture.
 
 - The "-a / --analyze" option:
