@@ -21,6 +21,8 @@ WORKDIR /home/netgoblin/netzob
 RUN git checkout develop
 RUN pip3 install -r requirements.txt
 RUN python3 setup.py install
+#Move the Import file to install location. The setup.py seems broken, this is a temporary fix
+RUN cp -r /home/netgoblin/netzob/src/netzob/Import/ /usr/local/lib/python3.5/dist-packages/Netzob-1.0.2-py3.5-linux-x86_64.egg/netzob/
 
 #Get TAPIRE
 WORKDIR /home
@@ -33,6 +35,7 @@ RUN pip3 install -r requirements.txt
 WORKDIR /home
 RUN wget https://bintray.com/artifact/download/kaitai-io/universal/0.7/kaitai-struct-compiler-0.7.zip
 RUN unzip kaitai-struct-compiler-0.7.zip
+RUN rm kaitai-struct-compiler-0.7.zip
 
 #Set workdir back to TAPIRE
 WORKDIR /home/TAPIRE
